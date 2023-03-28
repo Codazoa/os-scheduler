@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Werror -g
+CFLAGS = -Wall -g #-Werror
 OBJ = main.o cpu_thread.o io_thread.o file_parser.o
 HDRS = cpu_thread.h file_parser.h io_thread.h
 

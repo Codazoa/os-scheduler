@@ -15,6 +15,8 @@
 
 // take a file, parse it
 // spawn new thread for each CPU and IO burst
-void parse_file(FILE *file_ptr){
-    printf("Parsing File\n")
+void *parse_file(void *arg){
+    FILE *fp = (FILE *)arg;
+    printf("Parsing File\n");
+    return NULL;
 }

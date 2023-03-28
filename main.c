@@ -7,7 +7,7 @@
 #include "io_thread.h"
 #include "file_parser.h"
 
-#define DEBUG 0
+#define DEBUG 1
 
 int main(int argc, char const *argv[]) {
     
@@ -96,12 +96,12 @@ int main(int argc, char const *argv[]) {
     if( pthread_create(&file_parser, NULL, parse_file, file_ptr) != 0 ){
         // check if thread was successfully created
         fprintf(stderr, "Error creating thread\n");
-        exit(1)
+        exit(1);
     }
 
     // join thread and close file
-    pthread_join(file_parser, NULL)
-    fclose(file_ptr)
+    pthread_join(file_parser, NULL);
+    fclose(file_ptr);
 
     // print results
     
