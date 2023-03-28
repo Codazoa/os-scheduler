@@ -11,3 +11,10 @@
 // CPU_BURST: CPU burst time in ms
 // IO_BURST: IO burst time in ms
 // TIME_TO_SLEEP: how many ms for the parser thread to sleep
+
+
+// take a file, parse it
+// spawn new thread for each CPU and IO burst
+void parse_file(FILE *file_ptr){
+    printf("Parsing File\n")
+}

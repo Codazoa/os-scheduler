@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include<pthread.h>
 
 #include "cpu_thread.h"
 #include "io_thread.h"
@@ -41,7 +42,7 @@ int main(int argc, char const *argv[]) {
                 algo = 4;
             }
             else {
-                if(DEBUG) { printf("Error: Invalid algorithm\n"); }
+                if(DEBUG) { fprintf(stderr, "Error: Invalid algorithm\n"); }
                 exit(1);
             }
             i++;
@@ -63,7 +64,7 @@ int main(int argc, char const *argv[]) {
 
             // check if file was opened
             if(file_ptr == NULL){
-                perror("Error: Cannot open file\n");
+                fprintf(stderr, "Error: Cannot open file\n");
                 exit(1);
             }
         }
@@ -71,17 +72,17 @@ int main(int argc, char const *argv[]) {
 
     // check if we got an algorithm and input at least
     if( !algo ){
-        printf("Error: Missing algorithm\n");
+        fprintf(stderr, "Error: Missing algorithm\n");
         printf("Usage: ./scheduler -alg [FCFS,SJF,PR,RR] [-quantum [integer(ms)] -input [filename]\n");
         exit(1);
     }
     else if( !file_ptr ){
-        printf("Error: Missing input file\n");
+        fprintf(stderr, "Error: Missing input file\n");
         printf("Usage: ./scheduler -alg [FCFS,SJF,PR,RR] [-quantum [integer(ms)] -input [filename]\n");
         exit(1);
     }
     else if( algo == 4 && !quantum ){
-        printf("Error: Missing quantum time\n");
+        fprintf(stderr, "Error: Missing quantum time\n");
         printf("Usage: ./scheduler -alg [FCFS,SJF,PR,RR] [-quantum [integer(ms)] -input [filename]\n");
         exit(1);
     }
@@ -90,8 +91,19 @@ int main(int argc, char const *argv[]) {
     // End input
     ///////////////////////////////////////////////////
 
+    // create input file parsing thread
+    pthread_t file_parser;
+    if( pthread_create(&file_parser, NULL, parse_file, file_ptr) != 0 ){
+        // check if thread was successfully created
+        fprintf(stderr, "Error creating thread\n");
+        exit(1)
+    }
 
+    // join thread and close file
+    pthread_join(file_parser, NULL)
+    fclose(file_ptr)
 
-
+    // print results
+    
     return 0;
 }
