@@ -2,7 +2,12 @@
 #define CPU_THREAD_H
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/select.h>
+
 #include "double_linked_list.h"
+#include "process.h"
 
 // This thread is analogous to the kernel’s CPU scheduler. Its job is to check
 // the ready queue for processes and, if there are any, pick one from the queue

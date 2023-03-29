@@ -41,5 +41,35 @@ void *start_scheduler(void *arg) {
     // create the ready queue
     DoublyLinkedList *ready_queue = create_list();
 
+    
+    ssize_t n1, n2;
+    // read from both pipes
+    while (1) {
+        Process *new_parse_proc = NULL;
+        Process *new_io_proc = NULL;
+        n1 = read(parse_cpu_pipe[0], new_parse_proc, sizeof(Process));
+        // n2 = read(cpu_io_pipe[0], new_io_proc, sizeof(Process));
+
+        if (n1 == 0 && n2 == 0) {
+            // both pipes have reached EOF
+            break;
+        }
+
+        if (n1 > 0) {
+            // got a process from parser
+            // add new_parse_proc to ready_queue
+        }
+
+        if (n2 > 0) {
+            // got a process from io thread
+            // add new_io_proc to ready_queue
+        }
+
+        // check if there is anything in the ready queue
+        if (ready_queue->head == NULL){
+            continue;
+        }
+    }
+
     return NULL;
 }
