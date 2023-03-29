@@ -34,4 +34,7 @@ Process *popLeastTimeTotal(DoublyLinkedList *list);
 //Return the lowest next time remaining proc of the linked list
 Process *popLeastTimeIndv(DoublyLinkedList *list);
 
+//Return true if the list is empty
+bool isEmpty(DoublyLinkedList *list);
+
 #endif

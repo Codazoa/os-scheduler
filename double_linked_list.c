@@ -29,6 +29,15 @@ void append(DoublyLinkedList *list, Process *new_proc) {
     }
 }
 
+//isEmpty
+//isEmpty returns true if the DLL does not have a head, otherwise it returns false
+bool isEmpty(DoublyLinkedList *list){
+    if(list->head == NULL){
+        return true;
+    }
+    return false;
+}
+
 //popFirst
 //This function will return the head process of the doubly linked list
 Process *popFirst(DoublyLinkedList *list){
