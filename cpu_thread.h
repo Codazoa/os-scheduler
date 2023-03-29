@@ -25,8 +25,10 @@ extern int parse_cpu_pipe[2];
 extern int cpu_io_pipe[2];
 
 typedef struct {
-    int algo;
-    int quantum;
+    int algo; // which algorithm we are using
+    int quantum; // optionally what the quantum is (default=0)
+    DoublyLinkedList *ready_queue; // pointer to ready_queue shared memory
+    DoublyLinkedList *io_queue; // pointer to io_queue shared memory
 } CPU_args_t;
 
 void *start_scheduler(void *arg);

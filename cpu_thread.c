@@ -34,12 +34,13 @@ void *start_scheduler(void *arg) {
     CPU_args_t *cpu_args = (CPU_args_t *)arg;
     int algo = cpu_args->algo;
     int quantum = cpu_args->quantum;
+    DoublyLinkedList *ready_queue = cpu_args->ready_queue;
 
     printf("Algorithm is %d\n", algo); //DEBUG
     printf("Quantum is %d\n", quantum);
 
     // create the ready queue
-    DoublyLinkedList *ready_queue = create_list();
+    // DoublyLinkedList *ready_queue = create_list();
 
     
     ssize_t n1, n2;

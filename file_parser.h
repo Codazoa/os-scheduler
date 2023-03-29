@@ -5,7 +5,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+
 #include "process.h"
+#include "double_linked_list.h"
 
 // One thread is responsible for reading the input file. This corresponds to 
 // user activity causing new processes to come into existence. Any time this 
@@ -16,6 +18,11 @@
 // reading the file. This thread quits once it reads stop.
 
 extern int parse_cpu_pipe[2];
+
+typedef struct {
+    FILE *fp; // file pointer for our input file (already valid)
+    DoublyLinkedList *ready_queue; // pointer to ready_queue shared memory
+} Parser_args_t;
 
 void *parse_file(void *arg);
 
