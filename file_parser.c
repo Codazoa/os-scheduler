@@ -62,6 +62,7 @@ void *parse_file(void *arg){
 
             // create a new process with priority and burst times
             Process *new_process = create_proc(priority, bursts, burst_count);
+            append(ready_queue, new_process);
 
             
 
