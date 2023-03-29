@@ -22,7 +22,6 @@ extern int parse_cpu_pipe[2];
 typedef struct {
     FILE *fp; // file pointer for our input file (already valid)
     DoublyLinkedList *ready_queue; // pointer to ready_queue shared memory
-    DoublyLinkedList *complete_queue; // pointer to completed queue shared memory
 } Parser_args_t;
 
 void *parse_file(void *arg);

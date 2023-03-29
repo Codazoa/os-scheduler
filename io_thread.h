@@ -16,4 +16,6 @@ typedef struct {
     DoublyLinkedList *io_queue;
 } io_args_t;
 
+void *startIO(void *arg); // start the io thread
+
 #endif
