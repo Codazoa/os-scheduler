@@ -40,6 +40,12 @@ bool isEmpty(DoublyLinkedList *list){
     return false;
 }
 
+//getSize
+//getSize returns the size of the DLL
+int getSize(DoublyLinkedList *list){
+    return list->size;
+}
+
 //popFirst
 //This function will return the head process of the doubly linked list
 Process *popFirst(DoublyLinkedList *list){
