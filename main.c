@@ -1,13 +1,18 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
-#include<pthread.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <pthread.h>
+#include <sys/types.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>
 
 #include "cpu_thread.h"
 #include "io_thread.h"
 #include "file_parser.h"
+#include "process.h"
 
-#define DEBUG 1
+#define DEBUG 1 // toggle for debug purposes
+#define SHM_SIZE sizeof(Process) // shared memory size
 
 int parse_cpu_pipe[2];
 int cpu_io_pipe[2];
@@ -94,9 +99,53 @@ int main(int argc, char const *argv[]) {
     // End input
     ///////////////////////////////////////////////////
 
+    // create shared memory id for various queues
+    int shm_readyq_id = shmget(IPC_PRIVATE, sizeof(DoublyLinkedList), IPC_CREAT | 0666);
+    if (shm_readyq_id < 0) {
+        perror("shmget shm_readyq_id\n");
+        exit(1);
+    }
+
+    int shm_ioq_id = shmget(IPC_PRIVATE, sizeof(DoublyLinkedList), IPC_CREAT | 0666);
+    if (shm_ioq_id < 0) {
+        perror("shmget shm_ioq_id\n");
+        exit(1);
+    }
+
+    int shm_completeq_id = shmget(IPC_PRIVATE, sizeof(DoublyLinkedList), IPC_CREAT | 0666);
+    if (shm_completeq_id < 0) {
+        perror("shmget shm_completeq_id\n");
+        exit(1);
+    }
+
+    // create shared memory pointers for various queues
+    DoublyLinkedList *ready_queue = (DoublyLinkedList*) shmat(shm_readyq_id, NULL, 0);
+    if (ready_queue == (void*) -1) {
+        perror("shmat ready_queue\n");
+        exit(1);
+    }
+
+    DoublyLinkedList *io_queue = (DoublyLinkedList*) shmat(shm_ioq_id, NULL, 0);
+    if (io_queue == (void*) -1) {
+        perror("shmat io_queue\n");
+        exit(1);
+    }
+
+    DoublyLinkedList *complete_queue = (DoublyLinkedList*) shmat(shm_completeq_id, NULL, 0);
+    if (complete_queue == (void*) -1) {
+        perror("shmat complete_queue\n");
+        exit(1);
+    }
+
+    // create lists in the shared memory
+    ready_queue = create_list();
+    io_queue = create_list();
+    complete_queue = create_list();
+
     // create input file parsing thread
     pthread_t file_parser;
-    if (pthread_create(&file_parser, NULL, parse_file, file_ptr) != 0) {
+    Parser_args_t parser_args = { file_ptr, ready_queue };
+    if (pthread_create(&file_parser, NULL, parse_file, &parser_args) != 0) {
         // check if thread was successfully created
         fprintf(stderr, "Error creating file_parser thread\n");
         exit(1);
@@ -104,25 +153,39 @@ int main(int argc, char const *argv[]) {
 
     // create thread for cpu scheduler
     pthread_t cpu_thread;
-    CPU_args_t cpu_args = { algo, quantum }; 
+    CPU_args_t cpu_args = { algo, quantum, ready_queue, io_queue, complete_queue }; 
     if (pthread_create(&cpu_thread, NULL, start_scheduler, &cpu_args) != 0) {
         // check if thread was successfully created
-        fprintf(stderr, "Error creating CPU_thread");
+        fprintf(stderr, "Error creating CPU_thread\n");
         exit(1);
     };
 
-    // create pipes between (file_parser and cpu) and (cpu and io)
-    if (pipe(parse_cpu_pipe) < 0 || pipe(cpu_io_pipe) < 0 ) {
-        perror("Pipe error");
+    // create io thread
+    pthread_t io_thread;
+    io_args_t io_args = { io_queue };
+    if (pthread_create(&io_thread, NULL, startIO, &io_args) != 0){
+        // check if thread was successfully created
+        fprintf(stderr, "Error creating IO_thread\n");
         exit(1);
     }
 
     // join threads and close file
     pthread_join(file_parser, NULL);
+    pthread_join(io_thread, NULL);
     pthread_join(cpu_thread, NULL);
     fclose(file_ptr);
 
+
     // print results
     
+    // disconnect shared memory
+    shmdt(ready_queue);
+    shmdt(io_queue);
+    shmdt(complete_queue);
+
+    shmctl(shm_readyq_id, IPC_RMID, NULL);
+    shmctl(shm_ioq_id, IPC_RMID, NULL);
+    shmctl(shm_completeq_id, IPC_RMID, NULL);
+
     return 0;
 }
