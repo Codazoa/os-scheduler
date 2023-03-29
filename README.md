@@ -13,7 +13,7 @@ Quantum is only used for RR (Round Robin) scheduling algorithm
 
 ### Questions:
 > How do you share data between parts of the program
-- 
+- We create shared memory queues for the threads to communicate and mutexes to control access to the structures to prevent race conditions.
 
 > Your approach to synchronization issues
 - 
