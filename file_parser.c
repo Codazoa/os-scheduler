@@ -18,5 +18,37 @@
 void *parse_file(void *arg){
     FILE *fp = (FILE *)arg;
     printf("Parsing File\n");
+
+    char line[100], word*;
+
+    while (fgets(line, sizeof(line), fp) != NULL) {
+        word = strtok(line, "\t\n");
+        if (strcmp(word, "proc") == 0){
+            // create process structure based on given values
+
+
+        }else if strcmp(word, "sleep"){
+            // sleep for the given number of milliseconds
+            word = strtok(NULL, "\t\n");
+
+            sleep_time = atoi(word);
+            if (sleep_time == 0 && word[0] != 0) {
+                printf("Error: conversion error, given sleep time is not an integer");
+                return 1;
+            } else {
+                print("DEBUG: sleeping for %d ms", sleep_time);
+                sleep(sleep_time);
+            }
+            
+        }else if strcmp(word, "stop"){
+            //stop the program
+
+
+        }else {
+            printf("Error: invalid input. please check that the file is correct\n")
+            return 1;
+        }
+    }
+
     return NULL;
 }
