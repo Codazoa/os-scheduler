@@ -15,4 +15,7 @@ Process *create_proc(int priority, int *burst_times);
 // return the current burst time pointed at by index
 int get_burst_time(Process *proc);
 
+// return next burst time
+int get_next_burst(Process *proc);
+
 #endif
