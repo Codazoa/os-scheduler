@@ -29,7 +29,7 @@ void *startIO(void *arg) {
     while(eofFlag){
 
         //Read from our pipe
-        n1 = read(parse_cpu_pipe[2], proc, sizeof(Process));
+        int n1 = read(parse_cpu_pipe[2], proc, sizeof(Process));
         if(n1 > 0){                         //New process, add to queue
             append(Queue, proc);
         }

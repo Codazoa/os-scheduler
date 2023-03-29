@@ -1,6 +1,8 @@
 #ifndef DOUBLE_LINKED_LIST
 #define DOUBLE_LINKED_LIST
 
+#include <stdbool.h> 
+
 #include "process.h"
 
 // struct to hold node data
