@@ -4,11 +4,6 @@
 // when we get created
 // create ready_queue
 
-// read from both pipes
-
-// if either pipe has a process
-    // append it to the ready queue
-
 // while ready queue has processes
     // check algo type
     // if algo = 1 FCFS
