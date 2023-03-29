@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -Wall -g #-Werror
-OBJ = main.o cpu_thread.o io_thread.o file_parser.o
-HDRS = cpu_thread.h file_parser.h io_thread.h
+OBJ = main.o cpu_thread.o io_thread.o file_parser.o double_linked_list.c
+HDRS = cpu_thread.h file_parser.h io_thread.h double_linked_list.h
 
 all: scheduler
 
@@ -18,6 +18,9 @@ io_thread.o: io_thread.c $(HDRS)
 	$(CC) $(CFLAGS) -c io_thread.c
 
 file_parser.o: file_parser.c $(HDRS)
+	$(CC) $(CFLAGS) -c file_parser.c
+
+double_linked_list.o: double_linked_list.c $(HDRS)
 	$(CC) $(CFLAGS) -c file_parser.c
 
 clean:
