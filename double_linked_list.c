@@ -40,6 +40,12 @@ bool isEmpty(DoublyLinkedList *list){
     return false;
 }
 
+//getSize
+//getSize returns the size of the DLL
+int getSize(DoublyLinkedList *list){
+    return list->size;
+}
+
 //popFirst
 //This function will return the head process of the doubly linked list
 Process *popFirst(DoublyLinkedList *list){
@@ -77,7 +83,10 @@ Process *popHighP(DoublyLinkedList *list){
         //Overwrite the priorityCounter if the current node has a higher priority
         if(curNode->proc->priority > priorityCounter){
             if(curNode->proc->priority == 10){  //Check if this is the highest priority
-                return curNode->proc;           //If it is, just return it
+                storage = curNode->proc;        //Move the proc to storage
+                free(curNode)                   //Free the memory used by node
+                list->size--;                   //Decrement list size
+                return storage;                 //If it is, just return it
             }
             priorityCounter = curNode->proc->priority;
         }
@@ -95,6 +104,7 @@ Process *popHighP(DoublyLinkedList *list){
             curNode->next->prev = curNode->prev;//Cut curNode out of the list
             curNode->prev->next = curNode->next;//Cut curNode out of the list
             free(curNode);                      //Free the memory allocated to curNode
+            list->size--;                       //Decrement list size
             return storage;                     //Return this proc
         }
         curNode = curNode->next;                //Set curNode to the next node
@@ -146,6 +156,7 @@ Process *popLeastTimeTotal(DoublyLinkedList *list){
             curNode->next->prev = curNode->prev;//Cut curNode out of the list
             curNode->prev->next = curNode->next;//Cut curNode out of the list
             free(curNode);                      //Free the memory allocated to curNode
+            list->size--;                       //Decrement list size
             return storage;
         }
     }
@@ -181,6 +192,7 @@ Process *popLeastTimeIndv(DoublyLinkedList *list){
             curNode->next->prev = curNode->prev;//Cut curNode out of the list
             curNode->prev->next = curNode->next;//Cut curNode out of the list
             free(curNode);                      //Free the memory allocated to curNode
+            list->size--;                       //Decrement list size
             return storage;                     //Set lowestTime to the total time from the process
         }
     }
