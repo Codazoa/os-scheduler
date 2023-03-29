@@ -29,6 +29,7 @@ typedef struct {
     int quantum; // optionally what the quantum is (default=0)
     DoublyLinkedList *ready_queue; // pointer to ready_queue shared memory
     DoublyLinkedList *io_queue; // pointer to io_queue shared memory
+    DoublyLinkedList *complete_queue; // complete_queue shared memory
 } CPU_args_t;
 
 void *start_scheduler(void *arg);
