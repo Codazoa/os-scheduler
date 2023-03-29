@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <unistd.h>
+#include "process.h"
 
 // One thread is responsible for reading the input file. This corresponds to 
 // user activity causing new processes to come into existence. Any time this 
