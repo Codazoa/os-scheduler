@@ -26,7 +26,9 @@ void append(DoublyLinkedList *list, Process *new_proc) {
     // if list has no head, 
     if (list->head == NULL) {
         list->head = new_node;
-    }
+    }  
+    // increment list size
+    list->size++;
 }
 
 //isEmpty
@@ -54,7 +56,7 @@ Process *popFirst(DoublyLinkedList *list){
         list->head->prev = NULL;                //Clear the old head from the current head's link
         free(oldHead);                          //Free the memory allocated to oldHead
     }
-
+    list->size--;                               //Decrement list size
     return storage;                             //Return the process
 }
 

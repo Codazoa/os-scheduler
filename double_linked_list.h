@@ -16,6 +16,7 @@ typedef struct Node{
 typedef struct {
     Node *head;
     Node *tail;
+    int size;
 } DoublyLinkedList;
 
 // create an empty linked list
