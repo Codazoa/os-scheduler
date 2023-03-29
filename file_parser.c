@@ -17,7 +17,8 @@
 // spawn new thread for each CPU and IO burst
 void *parse_file(void *arg){
     // FILE *fp = (FILE *)arg;
-    Parser_args_t *parser_args = (Parser_args_t) *args;
+    Parser_args_t *parser_args = (Parser_args_t*) arg;
+    FILE *fp = parser_args->fp;
     DoublyLinkedList *ready_queue = parser_args->ready_queue;
 
     printf("Parsing File\n");

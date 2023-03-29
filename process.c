@@ -7,7 +7,7 @@ Process *create_proc(int priority, int *burst_times, int burst_count) {
     new_proc->burst_times = burst_times;
     new_proc->index = 0;
     new_proc->burst_count = burst_count;
-    new_proc->start_wait_end_time = [0, 0, 0];
+    memset(new_proc->start_wait_end_time, 0, sizeof(new_proc->start_wait_end_time));
     new_proc->entered_ready = 0;
     return new_proc;
 }

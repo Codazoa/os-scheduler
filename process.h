@@ -2,13 +2,14 @@
 #define PROCESS_H
 
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct Process {
     int priority; // process's priority level
     int *burst_times; // burst time array
     int index; // where we are in the burst times array
     int burst_count; // count of bursts 
-    time_t *start_wait_end_time; // to hold a list of start, wait, end times
+    time_t start_wait_end_time[3]; // to hold a list of start, wait, end times
     time_t entered_ready; // time we entered the ready queue
 } Process;
 
