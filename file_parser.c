@@ -30,7 +30,7 @@ void *parse_file(void *arg){
             word = strtok(NULL, " \t\n");
             int priority = atoi(word);
             if (priority == 0 && word[0] != 0) {
-                printf("Error: conversion error, given priority is not an integer\n");
+                fprintf(stderr, "Error: conversion error, given priority is not an integer\n");
                 exit(1);
             }
 
@@ -38,7 +38,7 @@ void *parse_file(void *arg){
             word = strtok(NULL, " \t\n");
             int burst_count = atoi(word);
             if (burst_count == 0 && word[0] != 0) {
-                printf("Error: conversion error, given burst_count is not an integer\n");
+                fprintf(stderr, "Error: conversion error, given burst_count is not an integer\n");
                 exit(1);
             }
 
@@ -48,7 +48,7 @@ void *parse_file(void *arg){
             for(int i = 0; i < burst_count; i++) {
                 int burst = atoi(word);
                 if (burst == 0 && word[0] != 0) {
-                    printf("Error: conversion error, given burst is not an integer\n");
+                    fprintf(stderr, "Error: conversion error, given burst is not an integer\n");
                     exit(1);
                 } else {
                     bursts[i] = burst;
@@ -68,7 +68,7 @@ void *parse_file(void *arg){
 
             int sleep_time = atoi(word);
             if (sleep_time == 0 && word[0] != 0) {
-                printf("Error: conversion error, given sleep time is not an integer\n");
+                fprintf(stderr, "Error: conversion error, given sleep time is not an integer\n");
                 exit(1);
             } else {
                 printf("DEBUG: sleeping for %d ms\n", sleep_time);
@@ -82,7 +82,7 @@ void *parse_file(void *arg){
 
 
         }else {
-            printf("Error: invalid input. please check that the file is correct\n");
+            fprintf(stderr, "Error: invalid input. please check that the file is correct\n");
             exit(1);
         }
     }
