@@ -1,6 +1,8 @@
 #ifndef PROCESS_H
 #define PROCESS_H
 
+#include <stdlib.h>
+
 typedef struct Process {
     int priority;
     int *burst_times;
