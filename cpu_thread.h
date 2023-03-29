@@ -16,6 +16,9 @@
 // 3. Terminates the process if it completed its last CPU burst
 // Then, schedule another process from the ready queue.
 
+extern int parse_cpu_pipe[2];
+extern int cpu_io_pipe[2];
+
 typedef struct {
     int algo;
     int quantum;

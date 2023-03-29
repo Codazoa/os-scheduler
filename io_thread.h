@@ -6,5 +6,6 @@
 // burst time (to simulate waiting on an I/O device) and then put the process
 // back in the ready queue. Repeat until there are no more jobs.
 
+extern int cpu_io_pipe[2];
 
 #endif
