@@ -16,6 +16,11 @@
 // 3. Terminates the process if it completed its last CPU burst
 // Then, schedule another process from the ready queue.
 
+typedef struct {
+    int algo;
+    int quantum;
+} CPU_args_t;
+
 void *start_scheduler(void *arg);
 
 #endif
