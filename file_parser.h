@@ -5,9 +5,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <pthread.h>
 
 #include "process.h"
 #include "double_linked_list.h"
+
+#define DEBUG 1
 
 // One thread is responsible for reading the input file. This corresponds to 
 // user activity causing new processes to come into existence. Any time this 
@@ -18,6 +21,7 @@
 // reading the file. This thread quits once it reads stop.
 
 extern int parse_cpu_pipe[2];
+extern pthread_mutex_t readyq_mtx;
 
 typedef struct {
     FILE *fp; // file pointer for our input file (already valid)

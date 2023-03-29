@@ -4,10 +4,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <pthread.h>
 #include <sys/select.h>
 
 #include "double_linked_list.h"
 #include "process.h"
+
+#define DEBUG 1
 
 // This thread is analogous to the kernel’s CPU scheduler. Its job is to check
 // the ready queue for processes and, if there are any, pick one from the queue
@@ -21,8 +24,9 @@
 // 3. Terminates the process if it completed its last CPU burst
 // Then, schedule another process from the ready queue.
 
-extern int parse_cpu_pipe[2];
-extern int cpu_io_pipe[2];
+// extern int parse_cpu_pipe[2];
+// extern int cpu_io_pipe[2];
+extern pthread_mutex_t readyq_mtx;
 
 typedef struct {
     int algo; // which algorithm we are using

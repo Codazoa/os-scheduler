@@ -17,6 +17,8 @@
 int parse_cpu_pipe[2];
 int cpu_io_pipe[2];
 
+pthread_mutex_t readyq_mtx = PTHREAD_MUTEX_INITIALIZER;
+
 int main(int argc, char const *argv[]) {
     
     ////////////////////////////////////////////////

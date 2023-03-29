@@ -33,25 +33,49 @@ void *start_scheduler(void *arg) {
     DoublyLinkedList *io_queue = cpu_args->io_queue;
     DoublyLinkedList *complete_queue = cpu_args->complete_queue;
 
-    printf("Algorithm is %d\n", algo); //DEBUG
-    printf("Quantum is %d\n", quantum);
+    if(DEBUG){
+        printf("Algorithm is %d\n", algo); //DEBUG
+        printf("Quantum is %d\n", quantum);
+    }
+
+    sleep(5);
+    // Node *cursor = ready_queue->head;
+    // while(cursor){
+    //     // Process *data = popFirst(ready_queue);
+    //     Process *data = cursor->proc;
+    //     printf("Popped Process (scheduler)\n");
+    //     printf("Priority: %d\n", data->priority);
+    //     printf("BurstNum: %d\n", data->burst_count);
+    //     for(int i = 0; i < data->burst_count; i++){
+    //         printf("%d ", data->burst_times[i]);
+    //     }
+    //     printf("\n");
+    //     cursor = cursor->next;
+    // }
     
     while (1) {
         // check if there is anything in the ready queue
         if (isEmpty(ready_queue)){
+            printf("ready Q is empty\n");
             continue;
         }
 
         Process *next_proc;
 
+
         switch (algo) {
             case 1: //First Come First Serve
                 // pop first off ready queue
-                next_proc = popFirst(ready_queue);
-                // sleep for its time
-                sleep(get_next_burst(next_proc));
+                // pthread_mutex_lock(&readyq_mtx);
+                // next_proc = popFirst(ready_queue);
+                // pthread_mutex_unlock(&readyq_mtx);
+
+                // printf("New Process\nPriority: %d\n", next_proc->priority);
+                // // sleep for its time
+                // printf("Sleep for %d\n", get_next_burst(next_proc));
+                // sleep(get_next_burst(next_proc));
                 // push it onto the io queue 
-                append(ready_queue, next_proc);
+                // append(ready_queue, next_proc);
                 break;
             case 2: //Shortest Job First
                 break;

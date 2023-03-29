@@ -50,7 +50,7 @@ int getSize(DoublyLinkedList *list){
 //This function will return the head process of the doubly linked list
 Process *popFirst(DoublyLinkedList *list){
     Node *oldHead = list->head;                 //Store the current head  
-    Process *storage;                            //Variable to hold the process while the node is freed
+    Process *storage;                           //Variable to hold the process while the node is freed
 
     if (oldHead == NULL){                       //Make sure list isn't empty
         return NULL;
@@ -84,7 +84,7 @@ Process *popHighP(DoublyLinkedList *list){
         if(curNode->proc->priority > priorityCounter){
             if(curNode->proc->priority == 10){  //Check if this is the highest priority
                 storage = curNode->proc;        //Move the proc to storage
-                free(curNode)                   //Free the memory used by node
+                free(curNode);                  //Free the memory used by node
                 list->size--;                   //Decrement list size
                 return storage;                 //If it is, just return it
             }
