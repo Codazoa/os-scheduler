@@ -14,6 +14,7 @@ extern int cpu_io_pipe[2];
 
 typedef struct {
     DoublyLinkedList *io_queue;
+    DoublyLinkedList *ready_queue;
 } io_args_t;
 
 void *startIO(void *arg); // start the io thread

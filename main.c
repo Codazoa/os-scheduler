@@ -162,7 +162,7 @@ int main(int argc, char const *argv[]) {
 
     // create io thread
     pthread_t io_thread;
-    io_args_t io_args = { io_queue };
+    io_args_t io_args = { io_queue, ready_queue };
     if (pthread_create(&io_thread, NULL, startIO, &io_args) != 0){
         // check if thread was successfully created
         fprintf(stderr, "Error creating IO_thread\n");
