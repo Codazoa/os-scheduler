@@ -40,4 +40,7 @@ Process *popLeastTimeIndv(DoublyLinkedList *list);
 //Return true if the list is empty
 bool isEmpty(DoublyLinkedList *list);
 
+//Return the size of the list
+int getSize(DoublyLinkedList *list);
+
 #endif
