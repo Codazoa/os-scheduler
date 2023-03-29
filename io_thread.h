@@ -2,6 +2,8 @@
 #define IO_THREAD_H
 
 #include "double_linked_list.h"
+#include <stdio.h>
+#include <unistd.h>
 
 // This thread simulates the I/O subsystem. If there is anything waiting in
 // the I/O queue, select a process in FIFO order. Sleep for the given I/O 
