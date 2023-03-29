@@ -101,7 +101,8 @@ int main(int argc, char const *argv[]) {
 
     // create thread for cpu scheduler
     pthread_t cpu_thread;
-    if (pthread_create(&cpu_thread, NULL, start_scheduler, &algo) != 0) {
+    CPU_args_t cpu_args = { algo, quantum }; 
+    if (pthread_create(&cpu_thread, NULL, start_scheduler, &cpu_args) != 0) {
         // check if thread was successfully created
         fprintf(stderr, "Error creating CPU_thread");
         exit(1);
