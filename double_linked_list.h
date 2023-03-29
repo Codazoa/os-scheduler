@@ -1,9 +1,11 @@
 #ifndef DOUBLE_LINKED_LIST
 #define DOUBLE_LINKED_LIST
 
+#include "process.h"
+
 // struct to hold node data
 typedef struct Node{
-    void *data;
+    Process *proc;
     struct Node *prev;
     struct Node *next;
 } Node;
@@ -18,7 +20,6 @@ typedef struct {
 DoublyLinkedList *create_list();
 
 // append a node with data in it
-void append(DoublyLinkedList *list, void *data);
-
+void append(DoublyLinkedList *list, Process *new_proc);
 
 #endif
