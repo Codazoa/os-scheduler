@@ -33,5 +33,5 @@ void *startIO(void *arg) {
         // check if we got the signal to end and break
     }
 
-    pthread_exit(NULL);
+    return NULL;
 }
