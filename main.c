@@ -9,6 +9,9 @@
 
 #define DEBUG 1
 
+int parse_cpu_pipe[2];
+int cpu_io_pipe[2];
+
 int main(int argc, char const *argv[]) {
     
     ////////////////////////////////////////////////
@@ -109,8 +112,6 @@ int main(int argc, char const *argv[]) {
     };
 
     // create pipes between (file_parser and cpu) and (cpu and io)
-    int parse_cpu_pipe[2];
-    int cpu_io_pipe[2];
     pipe(parse_cpu_pipe);
     pipe(cpu_io_pipe);
 
