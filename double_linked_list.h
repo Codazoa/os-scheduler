@@ -23,6 +23,9 @@ DoublyLinkedList *create_list();
 void append(DoublyLinkedList *list, Process *new_proc);
 
 //Pop off first node of list
-Process popFirst(DoublyLinkgedList *list);
+Process *popFirst(DoublyLinkedList *list);
+
+//Return the highest priority of the linked list
+Process *popHighP(DoublyLinkedList *list);
 
 #endif
