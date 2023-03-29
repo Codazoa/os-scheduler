@@ -7,10 +7,11 @@ typedef struct Process {
     int priority;
     int *burst_times;
     int index;
+    int burst_count;
 } Process;
 
 // create a new process with the given priority and burst time array
-Process *create_proc(int priority, int *burst_times);
+Process *create_proc(int priority, int *burst_times, int burst_count);
 
 // return the current burst time pointed at by index
 int get_burst_time(Process *proc);
