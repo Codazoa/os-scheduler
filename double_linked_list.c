@@ -77,10 +77,14 @@ Process *popHighP(DoublyLinkedList *list){
         
         //Check to see if curNode matches our highest priority
         if(curNode->proc->priority == priorityCounter){
+            curNode->next->prev = curNode->prev;//Cut curNode out of the list
+            curNode->prev->next = curNode->next;//Cut curNode out of the list
             return curNode->proc;               //Return this proc
         }
         curNode = curNode->next;                //Set curNode to the next node
     }
+    
+    
     return NULL;                                //Backup return in case something messes up
 }
 
@@ -121,6 +125,8 @@ Process *popLeastTimeTotal(DoublyLinkedList *list){
         }
 
         if(timer == lowestTime){                //If this has the lowest time remaining return it
+            curNode->next->prev = curNode->prev;//Cut curNode out of the list
+            curNode->prev->next = curNode->next;//Cut curNode out of the list
             return curNode->proc;
         }
     }
@@ -151,6 +157,8 @@ Process *popLeastTimeIndv(DoublyLinkedList *list){
 
         //Check if the next burst time is lower than the current record
         if(curNode->proc->burst_times[curNode->proc->index] == lowestTime){
+            curNode->next->prev = curNode->prev;//Cut curNode out of the list
+            curNode->prev->next = curNode->next;//Cut curNode out of the list
             return curNode->proc;               //Set lowestTime to the total time from the process
         }
     }
