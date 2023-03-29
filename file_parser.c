@@ -74,6 +74,7 @@ void *parse_file(void *arg){
 
         }else if strcmp(word, "stop"){
             //stop the program
+            return NULL;
 
 
         }else {
