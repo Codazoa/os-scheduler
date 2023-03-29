@@ -30,7 +30,7 @@ void *parse_file(void *arg){
             word = strtok(NULL, " \t\n");
             int priority = atoi(word);
             if (priority == 0 && word[0] != 0) {
-                printf("Error: conversion error, given priority is not an integer");
+                printf("Error: conversion error, given priority is not an integer\n");
                 exit(1);
             }
 
@@ -38,7 +38,7 @@ void *parse_file(void *arg){
             word = strtok(NULL, " \t\n");
             int burst_count = atoi(word);
             if (burst_count == 0 && word[0] != 0) {
-                printf("Error: conversion error, given burst_count is not an integer");
+                printf("Error: conversion error, given burst_count is not an integer\n");
                 exit(1);
             }
 
@@ -48,7 +48,7 @@ void *parse_file(void *arg){
             for(int i = 0; i < burst_count; i++) {
                 int burst = atoi(word);
                 if (burst == 0 && word[0] != 0) {
-                    printf("Error: conversion error, given burst is not an integer");
+                    printf("Error: conversion error, given burst is not an integer\n");
                     exit(1);
                 } else {
                     bursts[i] = burst;
@@ -57,6 +57,7 @@ void *parse_file(void *arg){
                 word = strtok(NULL, " \t\n");
             }
 
+            // create a new process with priority and burst times
             Process *new_process = create_proc(priority, bursts);
 
         }else if (strcmp(word, "sleep") == 0) {
@@ -65,11 +66,11 @@ void *parse_file(void *arg){
 
             int sleep_time = atoi(word);
             if (sleep_time == 0 && word[0] != 0) {
-                printf("Error: conversion error, given sleep time is not an integer");
+                printf("Error: conversion error, given sleep time is not an integer\n");
                 exit(1);
             } else {
-                printf("DEBUG: sleeping for %d ms", sleep_time);
-                sleep(sleep_time);
+                printf("DEBUG: sleeping for %d ms\n", sleep_time);
+                sleep(sleep_time/1000);
             }
 
         }else if (strcmp(word, "stop") == 0) {
