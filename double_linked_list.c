@@ -33,7 +33,7 @@ void append(DoublyLinkedList *list, Process *new_proc) {
 //This function will return the head process of the doubly linked list
 Process *popFirst(DoublyLinkedList *list){
     Node *oldHead = list->head;                 //Store the current head  
-    Process storage;                            //Variable to hold the process while the node is freed
+    Process *storage;                            //Variable to hold the process while the node is freed
 
     if (oldHead == NULL){                       //Make sure list isn't empty
         return NULL;
@@ -47,7 +47,6 @@ Process *popFirst(DoublyLinkedList *list){
     }
 
     return storage;                             //Return the process
-
 }
 
 //popHighP
@@ -55,7 +54,7 @@ Process *popFirst(DoublyLinkedList *list){
 Process *popHighP(DoublyLinkedList *list){
     int priorityCounter = 0;                    //Variable to keep track of the highest priority
     Node *curNode = list->head;                 //Store the head in the curNode variable;                             
-    Process storage;                            //Variable to hold the process while the node is freed
+    Process *storage;                            //Variable to hold the process while the node is freed
 
     if(curNode == NULL){                        //Make sure the list isn't empty
         return NULL;
@@ -100,7 +99,7 @@ Process *popLeastTimeTotal(DoublyLinkedList *list){
     int lowestTime = 9999;                      //Variable to keep track of the lowest time
     int timer = 0;                              //Variable to keep track of the current total time p0er proc
     Node *curNode = list->head;                 //Store the head in the curNode variable;                             
-    Process storage;                            //Variable to hold the process while the node is freed
+    Process *storage;                            //Variable to hold the process while the node is freed
 
     if(curNode == NULL){                        //Make sure the list isn't empty
         return NULL;
@@ -147,7 +146,7 @@ Process *popLeastTimeTotal(DoublyLinkedList *list){
 Process *popLeastTimeIndv(DoublyLinkedList *list){
     int lowestTime = 9999;                      //Variable to keep track of the lowest time
     Node *curNode = list->head;                 //Store the head in the curNode variable;                             
-    Process storage;                            //Variable to hold the process while the node is freed
+    Process *storage;                            //Variable to hold the process while the node is freed
 
     if(curNode == NULL){                        //Make sure the list isn't empty
         return NULL;
