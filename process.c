@@ -12,5 +12,6 @@ Process *create_proc(int priority, int *burst_times) {
 
 // return the current burst time pointed at by index
 int get_burst_time(Process *proc) {
-    return proc->burst_times[proc->index];
+    proc->index = proc->index + 1;
+    return proc->burst_times[(proc->index) - 1];
 }
