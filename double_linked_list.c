@@ -84,7 +84,7 @@ Process *popHighP(DoublyLinkedList *list){
     return NULL;                                //Backup return in case something messes up
 }
 
-//popLeastTime
+//popLeastTimeTotal
 //This function will return the proc with the least total time remaining
 Process *popLeastTimeTotal(DoublyLinkedList *list){
     int lowestTime = 9999;                      //Variable to keep track of the lowest time
@@ -125,7 +125,34 @@ Process *popLeastTimeTotal(DoublyLinkedList *list){
         }
     }
     return NULL;                                //Backup return if something bad happens
+}
 
+//popLeastTimeIndv
+//This function will return the proc with the least next time remaining
+Process *popLeastTimeIndv(DoublyLinkedList *list){
+    int lowestTime = 9999;                      //Variable to keep track of the lowest time
+    Node *curNode = list->head;                 //Store the head in the curNode variable;                             
 
+    if(curNode == NULL){                        //Make sure the list isn't empty
+        return NULL;
+    }
 
+    while(curNode != NULL){
+
+        //Check if the next burst time is lower than the current record
+        if(curNode->proc->burst_times[curNode->proc->index] < lowestTime){
+            lowestTime = curNode->proc->burst_times[curNode->proc->index];
+        }
+    }
+
+    curNode = list->head;                       //Set curNode back to the head
+
+    while(curNode != NULL){
+
+        //Check if the next burst time is lower than the current record
+        if(curNode->proc->burst_times[curNode->proc->index] == lowestTime){
+            return curNode->proc;               //Set lowestTime to the total time from the process
+        }
+    }
+    return NULL;                                //Backup return if something bad happens
 }
