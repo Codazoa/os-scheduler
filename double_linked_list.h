@@ -22,4 +22,7 @@ DoublyLinkedList *create_list();
 // append a node with data in it
 void append(DoublyLinkedList *list, Process *new_proc);
 
+//Pop off first node of list
+Process popFirst(DoublyLinkgedList *list);
+
 #endif

@@ -29,5 +29,24 @@ void append(DoublyLinkedList *list, Process *new_proc) {
     }
 }
 
+//popFirst
+//This function will remove the head of the doubly linked list
+Process popFirst(DoublyLinkgedList *list){
+
+    
+    if (list->head == NULL){            //Make sure list isn't empty
+        return NULL;
+    }
+    Node *oldHead = list->head;         //Store the current head         
+
+    if(list->head->next != NULL){       //Is there a next node
+        list->head = list->head->next;  //Make the head's next the new head
+        list->head->prev = NULL;        //Clear the old head from the current head's link
+    }
+
+    return oldHead->proc;               //Return the process
+
+}
+
 
 
