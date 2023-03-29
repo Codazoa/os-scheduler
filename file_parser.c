@@ -16,7 +16,10 @@
 // take a file, parse it
 // spawn new thread for each CPU and IO burst
 void *parse_file(void *arg){
-    FILE *fp = (FILE *)arg;
+    // FILE *fp = (FILE *)arg;
+    Parser_args_t *parser_args = (Parser_args_t) *args;
+    DoublyLinkedList *ready_queue = parser_args->ready_queue;
+
     printf("Parsing File\n");
 
     char line[100], *word;
@@ -60,7 +63,7 @@ void *parse_file(void *arg){
             // create a new process with priority and burst times
             Process *new_process = create_proc(priority, bursts, burst_count);
 
-            write(parse_cpu_pipe[1], &new_process, sizeof(Process));
+            
 
         }else if (strcmp(word, "sleep") == 0) {
             // sleep for the given number of milliseconds
@@ -77,7 +80,7 @@ void *parse_file(void *arg){
 
         }else if (strcmp(word, "stop") == 0) {
             //stop the program
-            close(parse_cpu_pipe[1]);
+            
             return NULL;
 
 
