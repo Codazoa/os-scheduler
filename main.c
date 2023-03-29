@@ -112,8 +112,10 @@ int main(int argc, char const *argv[]) {
     };
 
     // create pipes between (file_parser and cpu) and (cpu and io)
-    pipe(parse_cpu_pipe);
-    pipe(cpu_io_pipe);
+    if (pipe(parse_cpu_pipe) < 0 || pipe(cpu_io_pipe) < 0 ) {
+        perror("Pipe error");
+        exit(1);
+    }
 
     // join threads and close file
     pthread_join(file_parser, NULL);
