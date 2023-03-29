@@ -60,7 +60,7 @@ void *parse_file(void *arg){
             // create a new process with priority and burst times
             Process *new_process = create_proc(priority, bursts);
 
-            write(parse_cpu_pipe[1], &new_process, sizeof(Process))
+            write(parse_cpu_pipe[1], &new_process, sizeof(Process));
 
         }else if (strcmp(word, "sleep") == 0) {
             // sleep for the given number of milliseconds
