@@ -53,7 +53,7 @@ Process *popHighP(DoublyLinkedList *list){
     int priorityCounter = 0;                    //Variable to keep track of the highest priority
     Node *curNode = list->head;                 //Store the head in the curNode variable;                             
 
-    if(curNode == NULL){                     //Make sure the list isn't empty
+    if(curNode == NULL){                        //Make sure the list isn't empty
         return NULL;
     }
 
@@ -84,4 +84,48 @@ Process *popHighP(DoublyLinkedList *list){
     return NULL;                                //Backup return in case something messes up
 }
 
+//popLeastTime
+//This function will return the proc with the least total time remaining
+Process *popLeastTimeTotal(DoublyLinkedList *list){
+    int lowestTime = 9999;                      //Variable to keep track of the lowest time
+    int timer = 0;                              //Variable to keep track of the current total time p0er proc
+    Node *curNode = list->head;                 //Store the head in the curNode variable;                             
 
+    if(curNode == NULL){                        //Make sure the list isn't empty
+        return NULL;
+    }
+
+    while(curNode != NULL){
+
+        timer = 0;                              //Reset timer back to zero
+
+        //Add all of the burst times together from the current node
+        for(int i = curNode->proc->index; i < curNode->proc->burst_count; i++){
+            timer = timer + curNode->proc->burst_times[i];
+        }
+        
+        if(timer < lowestTime){                 //Check if the total value is less than the lowest value
+            lowestTime = timer;                 //Set lowestTime to the total time from the process
+        }
+    }
+
+    curNode = list->head;                       //Set curNode back to the head
+
+    while(curNode != NULL){
+
+        timer = 0;                              //Reset timer back to zero
+
+        //Add all of the burst times together from the current node
+        for(int i = curNode->proc->index; i < curNode->proc->burst_count; i++){
+            timer = timer + curNode->proc->burst_times[i];
+        }
+
+        if(timer == lowestTime){                //If this has the lowest time remaining return it
+            return curNode->proc;
+        }
+    }
+    return NULL;                                //Backup return if something bad happens
+
+
+
+}

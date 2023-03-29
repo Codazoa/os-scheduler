@@ -22,10 +22,13 @@ DoublyLinkedList *create_list();
 // append a node with data in it
 void append(DoublyLinkedList *list, Process *new_proc);
 
-//Pop off first node of list
+//Pop off first proc of list
 Process *popFirst(DoublyLinkedList *list);
 
-//Return the highest priority of the linked list
+//Return the highest priority proc of the linked list
 Process *popHighP(DoublyLinkedList *list);
+
+//Return the lowest total time remaining proc of the linked list
+Process *popLeastTimeTotal(DoublyLinkedList *list);
 
 #endif
