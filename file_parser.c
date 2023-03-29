@@ -22,12 +22,12 @@ void *parse_file(void *arg){
     char line[100], *word;
 
     while (fgets(line, sizeof(line), fp) != NULL) {
-        word = strtok(line, "\t\n");
-        if (strcmp(word, "proc") == 0){
+        word = strtok(line, " \t\n");
+        if (strcmp(word, "proc") == 0) {
             // create process structure based on given values
 
             // Convert second word to integer for PRIORITY
-            word = strtok(NULL, "\t\n");
+            word = strtok(NULL, " \t\n");
             int priority = atoi(word);
             if (priority == 0 && word[0] != 0) {
                 printf("Error: conversion error, given priority is not an integer");
@@ -35,7 +35,7 @@ void *parse_file(void *arg){
             }
 
             // Convert third word to integer for NUM OF BURSTS
-            word = strtok(NULL, "\t\n");
+            word = strtok(NULL, " \t\n");
             int burst_count = atoi(word);
             if (burst_count == 0 && word[0] != 0) {
                 printf("Error: conversion error, given burst_count is not an integer");
@@ -44,7 +44,7 @@ void *parse_file(void *arg){
 
             // Convert the rest of the line to integers for individual bursts
             int bursts[burst_count];
-            word = strtok(NULL, "\t\n");
+            word = strtok(NULL, " \t\n");
             for(int i = 0; i < burst_count; i++) {
                 int burst = atoi(word);
                 if (burst == 0 && word[0] != 0) {
@@ -54,14 +54,14 @@ void *parse_file(void *arg){
                     bursts[i] = burst;
                 }
                 // get next word before moving on
-                word = strtok(NULL, "\t\n");
+                word = strtok(NULL, " \t\n");
             }
 
             Process *new_process = create_proc(priority, bursts);
 
         }else if (strcmp(word, "sleep") == 0) {
             // sleep for the given number of milliseconds
-            word = strtok(NULL, "\t\n");
+            word = strtok(NULL, " \t\n");
 
             int sleep_time = atoi(word);
             if (sleep_time == 0 && word[0] != 0) {
@@ -72,7 +72,7 @@ void *parse_file(void *arg){
                 sleep(sleep_time);
             }
 
-        }else if (strcmp(word, "stop")){
+        }else if (strcmp(word, "stop") == 0) {
             //stop the program
             return NULL;
 
