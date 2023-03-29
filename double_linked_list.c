@@ -1,4 +1,5 @@
 #include "double_linked_list.h"
+#include <stdlib.h>
 
 DoublyLinkedList *create_list() {
     DoublyLinkedList *list = malloc(sizeof(DoublyLinkedList));
@@ -7,10 +8,10 @@ DoublyLinkedList *create_list() {
     return list;
 }
 
-void append(DoublyLinkedList *list, void *data) {
+void append(DoublyLinkedList *list, Process *new_proc) {
     //create the new node
     Node *new_node = malloc(sizeof(Node));
-    new_node->data = data;
+    new_node->proc = new_proc;
     new_node->prev = list->tail;
     new_node->next = NULL;
 
@@ -18,7 +19,7 @@ void append(DoublyLinkedList *list, void *data) {
     if (list->tail != NULL) {
         list->tail->next = new_node;
     }
-    
+
     // set tail to new end
     list->tail = new_node;
 
@@ -26,5 +27,7 @@ void append(DoublyLinkedList *list, void *data) {
     if (list->head == NULL) {
         list->head = new_node;
     }
-
 }
+
+
+
