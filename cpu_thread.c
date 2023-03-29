@@ -1,5 +1,16 @@
 #include "cpu_thread.h"
 
+
+// when we get created
+// create ready_queue
+
+// read from both pipes
+
+// if either pipe has a process
+    // append it to the ready queue
+
+
+
 // start the cpu scheduler
 void *start_scheduler(void *arg) {
     // check the algorithm passed
