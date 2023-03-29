@@ -6,7 +6,7 @@ HDRS = cpu_thread.h file_parser.h io_thread.h double_linked_list.h process.h
 all: scheduler
 
 scheduler: $(OBJ)
-	$(CC) $(CFLAGS) -o scheduler $(OBJ)
+	$(CC) $(CFLAGS) -o scheduler $(OBJ) -lpthread
 
 main.o: main.c $(HDRS)
 	$(CC) $(CFLAGS) -c main.c
