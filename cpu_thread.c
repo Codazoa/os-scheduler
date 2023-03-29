@@ -35,37 +35,30 @@ void *start_scheduler(void *arg) {
 
     printf("Algorithm is %d\n", algo); //DEBUG
     printf("Quantum is %d\n", quantum);
-
-    // create the ready queue
-    // DoublyLinkedList *ready_queue = create_list();
-
     
-    ssize_t n1, n2;
-    // read from both pipes
     while (1) {
-        Process *new_parse_proc = NULL;
-        Process *new_io_proc = NULL;
-        n1 = read(parse_cpu_pipe[0], new_parse_proc, sizeof(Process));
-        // n2 = read(cpu_io_pipe[0], new_io_proc, sizeof(Process));
-
-        if (n1 == 0 && n2 == 0) {
-            // both pipes have reached EOF
-            break;
-        }
-
-        if (n1 > 0) {
-            // got a process from parser
-            // add new_parse_proc to ready_queue
-        }
-
-        if (n2 > 0) {
-            // got a process from io thread
-            // add new_io_proc to ready_queue
-        }
-
         // check if there is anything in the ready queue
-        if (ready_queue->head == NULL){
+        if (isEmpty(ready_queue)){
             continue;
+        }
+
+        Process *next_proc;
+
+        switch (algo) {
+            case 1: //First Come First Serve
+                // pop first off ready queue
+                next_proc = popFirst(ready_queue);
+                // sleep for its time
+                sleep(get_next_burst(next_proc));
+                // push it onto the io queue 
+                append(ready_queue, next_proc);
+                break;
+            case 2: //Shortest Job First
+                break;
+            case 3: //Priority Scheduling
+                break; 
+            case 4: //Round Robin
+                break;
         }
     }
 
