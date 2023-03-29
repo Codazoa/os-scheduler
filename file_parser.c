@@ -26,6 +26,38 @@ void *parse_file(void *arg){
         if (strcmp(word, "proc") == 0){
             // create process structure based on given values
 
+            // Convert second word to integer for PRIORITY
+            word = strtok(NULL, "\t\n");
+            priority = atoi(word);
+            if (priority == 0 && word[0] != 0) {
+                printf("Error: conversion error, given priority is not an integer");
+                return 1;
+            }
+
+            // Convert third word to integer for NUM OF BURSTS
+            word = strtok(NULL, "\t\n");
+            burst_count = atoi(word);
+            if (burst_count == 0 && word[0] != 0) {
+                printf("Error: conversion error, given burst_count is not an integer");
+                return 1;
+            }
+
+            // Convert the rest of the line to integers for individual bursts
+            int bursts[burst_count];
+            word = strtok(NULL, "\t\n");
+            for(int i = 0; i++; i < burst_count) {
+                burst = atoi(word);
+                if (burst == 0 && word[0] != 0) {
+                    printf("Error: conversion error, given burst is not an integer");
+                    return 1;
+                } else {
+                    bursts[i] = burst;
+                }
+                // get next word before moving on
+                word = strtok(NULL, "\t\n");
+            }
+
+            new_process = create_proc(priority, bursts);
 
         }else if strcmp(word, "sleep"){
             // sleep for the given number of milliseconds
@@ -39,9 +71,10 @@ void *parse_file(void *arg){
                 print("DEBUG: sleeping for %d ms", sleep_time);
                 sleep(sleep_time);
             }
-            
+
         }else if strcmp(word, "stop"){
             //stop the program
+            return NULL;
 
 
         }else {
