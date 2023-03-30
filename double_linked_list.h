@@ -45,7 +45,4 @@ bool isEmpty(DoublyLinkedList *list);
 //Return the size of the list
 int getSize(DoublyLinkedList *list);
 
-//Calculate and update the wait time for the given process
-void calcWaitTime(Process *proc);
-
 #endif

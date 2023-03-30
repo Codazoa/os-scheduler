@@ -10,7 +10,7 @@ typedef struct Process {
     int burst_times[100]; // burst time array
     int index; // where we are in the burst times array
     int burst_count; // count of bursts 
-    time_t start_wait_end_time[3]; // to hold a list of start, wait, end times
+    struct timeval start_wait_end_time[3]; // to hold a list of start, wait, end times
     struct timeval entered_ready; // time we entered the ready queue
 } Process;
 
@@ -24,5 +24,8 @@ int get_burst_time(Process *proc);
 int get_next_burst(Process *proc);
 
 void print_process(Process *proc);
+
+//Calculate and update the wait time for the given process
+void calcWaitTime(Process *proc);
 
 #endif

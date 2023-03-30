@@ -34,3 +34,15 @@ void print_process(Process *proc){
     printf("StartTime: %ld\nWaitTime: %ld\nEndTime: %ld\n", 
         proc->start_wait_end_time[0],proc->start_wait_end_time[1],proc->start_wait_end_time[2]);
 }
+
+void calcWaitTime(Process *proc) {
+    struct timeval current_time;
+    gettimeofday(&current_time, NULL);
+
+    // convert time to ms
+    long int time_diff = (current_time.tv_sec - proc->entered_ready.tv_sec) * 1000000 +
+                         (current_time.tv_usec - proc->entered_ready.tv_usec);
+
+    // update process wait time with new wait time
+    proc->start_wait_end_time[1] += time_diff / 1000;
+}
