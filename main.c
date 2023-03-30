@@ -199,6 +199,10 @@ int main(int argc, char const *argv[]) {
         exit(1);
     }
 
+    // Get start time
+    struct timeval total_start;
+    gettimeofday(&total_start, NULL); 
+
     // set semaphore to 3 to allow threads to start running
     sem_post(&thread_access);
     sem_post(&thread_access);
@@ -209,12 +213,22 @@ int main(int argc, char const *argv[]) {
     pthread_join(file_parser, NULL);
     pthread_join(io_thread, NULL);
     pthread_join(cpu_thread, NULL);
+
+    // Get start time
+    struct timeval total_end;
+    gettimeofday(&total_end, NULL); 
+
     fclose(file_ptr);
 
     // calculate results
+    struct timeval total_runtime = timeval_diff(total_start, total_end);
+    float total_runtime_ms = ((float)total_runtime.tv_sec) * 1000 + ((float)total_runtime.tv_usec) / 1000;
     //throughput
-    //turn around time
+    float throughput = complete_queue->size / total_runtime_ms;
     
+
+
+    //turn around time
     struct timeval total_turnaround = {0, 0};
 
     struct timeval end;
@@ -234,7 +248,6 @@ int main(int argc, char const *argv[]) {
     }
 
    float total_turnaround_ms = ((float)total_turnaround.tv_sec) * 1000 + ((float)total_turnaround.tv_usec) / 1000;
-
    float avg_turnaround = total_turnaround_ms / complete_queue->size;
 
 
@@ -248,11 +261,11 @@ int main(int argc, char const *argv[]) {
     }
 
     float total_wait_ms = ((float)total_wait.tv_sec) * 1000 + ((float)total_wait.tv_usec) / 1000;
-
     float avg_wait = total_wait_ms / complete_queue->size;
 
     
     // print results
+    printf("Throughput                      : %f", throughput);
     printf("Avg. Turnaround Time            : %f", avg_turnaround);
     printf("Avg. Waiting Time in Ready Queue: %f", avg_wait);
     
