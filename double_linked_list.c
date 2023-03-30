@@ -60,6 +60,9 @@ Process *popFirst(DoublyLinkedList *list){
     if(list->head->next != NULL){               //Is there a next node
         list->head = list->head->next;          //Make the head's next the new head
         list->head->prev = NULL;                //Clear the old head from the current head's link
+    }else{
+        list->head = NULL;
+        list->tail = NULL;
     }
     free(oldHead);                              //Free the memory allocated to oldHead
     list->size--;                               //Decrement list size
