@@ -52,7 +52,7 @@ void *start_scheduler(void *arg) {
     while (1) {
         // check if there is anything in the ready queue
         if (isEmpty(ready_queue)){
-            printf("ready Q is empty\n");
+            // printf("ready Q is empty\n");
             continue;
         }
 
@@ -76,10 +76,22 @@ void *start_scheduler(void *arg) {
         }
         pthread_mutex_unlock(&readyq_mtx);                  //Unlock ready queue
 
+        printf("\nProcess popped (cpu)\n");
+        print_process(next_proc);
+
         // printf("New Process\nPriority: %d\n", next_proc->priority);
         // // sleep for its time
-        printf("Sleep for %d\n", get_next_burst(next_proc));
-        sleep(get_next_burst(next_proc));
+        printf("Sleep for %d\n", get_burst_time(next_proc));
+        sleep(get_burst_time(next_proc)/10);
+        next_proc->index++;
+
+        if (next_proc->index == next_proc->burst_count - 1) {
+            pthread_mutex_lock(&completeq_mtx);
+            append(complete_queue, next_proc);
+            pthread_mutex_unlock(&completeq_mtx);
+            printf("Process complete: Adding to complete queue\n");
+            continue;
+        }
 
         // push it onto the io queue 
         pthread_mutex_lock(&ioq_mtx);
