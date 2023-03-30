@@ -25,9 +25,20 @@ void *startIO(void *arg) {
     while(1){
 
         if(!isEmpty(io_queue)){
+            pthread_mutex_lock(&ioq_mtx);
             proc = popFirst(io_queue); // grab first process from io_queue
-            sleep(get_next_burst(proc)); // sleep for designated burst time
+            pthread_mutex_unlock(&ioq_mtx);
+
+            printf("\nProcess Popped (IO)\n");
+            print_process(proc);
+
+            printf("Sleep for %d\n", get_burst_time(proc));
+            sleep(get_burst_time(proc)/10); // sleep for designated burst time
+            proc->index++;
+
+            pthread_mutex_lock(&readyq_mtx);
             append(ready_queue, proc); // send back to cpu_scheduler
+            pthread_mutex_unlock(&readyq_mtx);
         }
 
         // check if we got the signal to end and break
