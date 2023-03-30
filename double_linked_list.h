@@ -2,6 +2,8 @@
 #define DOUBLE_LINKED_LIST
 
 #include <stdbool.h> 
+#include <stdlib.h>
+#include <sys/time.h>
 
 #include "process.h"
 
@@ -42,5 +44,8 @@ bool isEmpty(DoublyLinkedList *list);
 
 //Return the size of the list
 int getSize(DoublyLinkedList *list);
+
+//Calculate and update the wait time for the given process
+void calcWaitTime(Process *proc);
 
 #endif

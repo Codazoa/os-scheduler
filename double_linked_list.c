@@ -1,5 +1,4 @@
 #include "double_linked_list.h"
-#include <stdlib.h>
 
 DoublyLinkedList *create_list() {
     DoublyLinkedList *list = malloc(sizeof(DoublyLinkedList));
@@ -11,9 +10,10 @@ DoublyLinkedList *create_list() {
 void append(DoublyLinkedList *list, Process *new_proc) {
     //create the new node
     Node *new_node = malloc(sizeof(Node));
-    new_node->proc = new_proc;
+    new_node->proc = new_proc; 
     new_node->prev = list->tail;
     new_node->next = NULL;
+    gettimeofday(&(new_proc->entered_ready), NULL); // set the time process entered the queue
 
     // list has a tail
     if (list->tail != NULL) {
@@ -66,6 +66,7 @@ Process *popFirst(DoublyLinkedList *list){
     }
     free(oldHead);                              //Free the memory allocated to oldHead
     list->size--;                               //Decrement list size
+    calcWaitTime(storage);
     return storage;                             //Return the process
 }
 
@@ -202,4 +203,16 @@ Process *popLeastTimeIndv(DoublyLinkedList *list){
         }
     }
     return NULL;                                //Backup return if something bad happens
+}
+
+void calcWaitTime(Process *proc) {
+    struct timeval current_time;
+    gettimeofday(&current_time, NULL);
+
+    // convert time to ms
+    long int time_diff = (current_time.tv_sec - proc->entered_ready.tv_sec) * 1000000 +
+                         (current_time.tv_usec - proc->entered_ready.tv_usec);
+
+    // update process wait time with new wait time
+    proc->start_wait_end_time[1] += time_diff / 1000;
 }
