@@ -20,7 +20,6 @@
 // a sleep X it should go to sleep for X milliseconds, before going back to
 // reading the file. This thread quits once it reads stop.
 
-extern int parse_cpu_pipe[2];
 extern pthread_mutex_t readyq_mtx;
 
 typedef struct {

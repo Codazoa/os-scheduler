@@ -38,20 +38,16 @@ void *start_scheduler(void *arg) {
         printf("Quantum is %d\n", quantum);
     }
 
-    sleep(5);
-    // Node *cursor = ready_queue->head;
-    // while(cursor){
+
+    //debug
+    // sleep(5);
+    // pthread_mutex_lock(&readyq_mtx);
+    // while(!isEmpty(ready_queue)){
     //     // Process *data = popFirst(ready_queue);
-    //     Process *data = cursor->proc;
-    //     printf("Popped Process (scheduler)\n");
-    //     printf("Priority: %d\n", data->priority);
-    //     printf("BurstNum: %d\n", data->burst_count);
-    //     for(int i = 0; i < data->burst_count; i++){
-    //         printf("%d ", data->burst_times[i]);
-    //     }
-    //     printf("\n");
-    //     cursor = cursor->next;
+    //     Process *data = popFirst(ready_queue);
+    //     print_process(data);
     // }
+    // pthread_mutex_unlock(&readyq_mtx);
     
     while (1) {
         // check if there is anything in the ready queue

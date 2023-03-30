@@ -29,11 +29,9 @@ void *parse_file(void *arg){
         word = strtok(line, " \t\n");
         if (strcmp(word, "proc") == 0) {
             // create process structure based on given values
-            if(DEBUG) {printf("\nCreating new Process (Parser)\n");}
             // Convert second word to integer for PRIORITY
             word = strtok(NULL, " \t\n");
             int priority = atoi(word);
-            if(DEBUG) {printf("Priority: %d\n", priority);}
             if (priority == 0 && word[0] != 0) {
                 fprintf(stderr, "Error: conversion error, given priority is not an integer\n");
                 exit(1);
@@ -42,7 +40,6 @@ void *parse_file(void *arg){
             // Convert third word to integer for NUM OF BURSTS
             word = strtok(NULL, " \t\n");
             int burst_count = atoi(word);
-            if(DEBUG) {printf("BurstNum: %d\n", burst_count);}
             if (burst_count == 0 && word[0] != 0) {
                 fprintf(stderr, "Error: conversion error, given burst_count is not an integer\n");
                 exit(1);
@@ -63,33 +60,19 @@ void *parse_file(void *arg){
                 word = strtok(NULL, " \t\n");
             }
 
-            if(DEBUG) {
-                for(int i = 0; i < burst_count; i++){
-                    printf("%d ", bursts[i]);
-                }
-                printf("\n");
-            }
-
             // create a new process with priority and burst times
             Process *new_process = create_proc(priority, bursts, burst_count);
 
             if(DEBUG){ 
                 printf("\nAfter process Creation\n");
-                printf("Priority: %d\n", new_process->priority);
-                printf("BurstNum: %d\n", new_process->burst_count);
-                for (int i = 0; i < new_process->burst_count; i++) {
-                    printf("%d ", new_process->burst_times[i]);
-                }
-                printf("\n");
-                
-                pthread_mutex_lock(&readyq_mtx);
-                append(ready_queue, new_process);
-                pthread_mutex_unlock(&readyq_mtx);
+                print_process(new_process);
             }
-
+            pthread_mutex_lock(&readyq_mtx);
+            append(ready_queue, new_process);
+            pthread_mutex_unlock(&readyq_mtx);
             
 
-        }else if (strcmp(word, "sleep") == 0) {
+        } else if (strcmp(word, "sleep") == 0) {
             // sleep for the given number of milliseconds
             word = strtok(NULL, " \t\n");
 
@@ -102,28 +85,18 @@ void *parse_file(void *arg){
                 sleep(sleep_time/1000);
             }
 
-        }else if (strcmp(word, "stop") == 0) {
+        } else if (strcmp(word, "stop") == 0) {
             //stop the program
-            if(DEBUG) {
-                Node *cursor = ready_queue->head;
-                while(cursor){
-                    // Process *data = popFirst(ready_queue);
-                    Process *data = cursor->proc;
-                    printf("\nPopped Process (parser)\n");
-                    printf("Priority: %d\n", data->priority);
-                    printf("BurstNum: %d\n", data->burst_count);
-                    for(int i = 0; i < data->burst_count; i++){
-                        printf("%d ", data->burst_times[i]);
-                    }
-                    printf("\n");
-                    cursor = cursor->next;
-                }
-            }
-            
+
+            // while (!isEmpty(ready_queue)){
+            //     // Process *some_proc = popFirst(ready_queue);
+            //     // printf("\nPrinting someproc\n");
+            //     // print_process(popFirst(ready_queue)); 
+            // }
+
             return NULL;
 
-
-        }else {
+        } else {
             fprintf(stderr, "Error: invalid input. please check that the file is correct\n");
             exit(1);
         }

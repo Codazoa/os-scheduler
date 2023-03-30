@@ -9,13 +9,11 @@
 #include "cpu_thread.h"
 #include "io_thread.h"
 #include "file_parser.h"
+#include "double_linked_list.h"
 #include "process.h"
 
 #define DEBUG 1 // toggle for debug purposes
 #define SHM_SIZE sizeof(Process) // shared memory size
-
-int parse_cpu_pipe[2];
-int cpu_io_pipe[2];
 
 pthread_mutex_t readyq_mtx = PTHREAD_MUTEX_INITIALIZER;
 
@@ -101,6 +99,48 @@ int main(int argc, char const *argv[]) {
     // End input
     ///////////////////////////////////////////////////
 
+    // int times[5] = {1, 2, 3, 4, 5};
+    // Process *new_proc = create_proc(1, times, 5);
+
+    // int times2[5] = {5, 4, 3, 2, 1};
+    // Process *snd_proc = create_proc(2, times2, 5);
+
+    // int times3[5] = {4, 2, 5, 1, 2};
+    // Process *trd_proc = create_proc(3, times3, 5);
+
+    // DoublyLinkedList *queue = create_list();
+    // append(queue, new_proc);
+    // append(queue, snd_proc);
+    // append(queue, trd_proc);
+
+    // Node *cursor = queue->head;
+    // while(cursor){
+    //     // Process *data = popFirst(ready_queue);
+    //     Process *data = cursor->proc;
+    //     printf("\nPopped Process (parser)\n");
+    //     printf("Priority: %d\n", data->priority);
+    //     printf("BurstNum: %d\n", data->burst_count);
+    //     for(int i = 0; i < data->burst_count; i++){
+    //         printf("%d ", data->burst_times[i]);
+    //     }
+    //     printf("\n");
+    //     cursor = cursor->next;
+    // }
+
+    // while(!isEmpty(queue)){
+    //     // Process *data = popFirst(ready_queue);
+    //     Process *data = popFirst(queue);
+    //     printf("\nPopped Process (parser)\n");
+    //     printf("Priority: %d\n", data->priority);
+    //     printf("BurstNum: %d\n", data->burst_count);
+    //     for(int i = 0; i < data->burst_count; i++){
+    //         printf("%d ", data->burst_times[i]);
+    //     }
+    //     printf("\n");
+    // }
+    
+
+
     // create shared memory id for various queues
     int shm_readyq_id = shmget(IPC_PRIVATE, sizeof(DoublyLinkedList), IPC_CREAT | 0666);
     if (shm_readyq_id < 0) {
@@ -174,7 +214,7 @@ int main(int argc, char const *argv[]) {
     // join threads and close file
     pthread_join(file_parser, NULL);
     pthread_join(io_thread, NULL);
-    pthread_join(cpu_thread, NULL);
+    // pthread_join(cpu_thread, NULL);
     fclose(file_ptr);
 
 
