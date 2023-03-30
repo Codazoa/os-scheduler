@@ -20,6 +20,7 @@ void *parse_file(void *arg){
     Parser_args_t *parser_args = (Parser_args_t*) arg;
     FILE *fp = parser_args->fp;
     DoublyLinkedList *ready_queue = parser_args->ready_queue;
+    int *proc_count = parser_args->proc_count;
 
     // wait for main to allow us to continue
     sem_wait(&thread_access);
@@ -75,11 +76,11 @@ void *parse_file(void *arg){
                 print_process(new_process);
             }
 
+            (*proc_count)++; // increment process count
 
-            pthread_mutex_lock(&readyq_mtx);
-            append(ready_queue, new_process);
-            pthread_mutex_unlock(&readyq_mtx);
-            
+            pthread_mutex_lock(&readyq_mtx); // lock ready queue
+            append(ready_queue, new_process); // add new process to ready queue
+            pthread_mutex_unlock(&readyq_mtx); // unlock ready queue
 
         } else if (strcmp(word, "sleep") == 0) {
             // sleep for the given number of milliseconds
@@ -96,6 +97,7 @@ void *parse_file(void *arg){
 
         } else if (strcmp(word, "stop") == 0) {
             //stop the program
+            sem_post(&thread_access); // increment semaphore for later checking
             return NULL;
         } else {
             fprintf(stderr, "Error: invalid input. please check that the file is correct\n");
