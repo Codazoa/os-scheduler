@@ -33,43 +33,37 @@ void *startIO(void *arg) {
 
     while(1){
 
-        // int mtx_result = pthread_mutex_trylock(&thread_running_mtx);
-
         if(isEmpty(io_queue)){
             int sem_value;
             sem_getvalue(&thread_access, &sem_value);
-            
-            int mtx_result = pthread_mutex_trylock(&thread_running_mtx);
-
-            if(DEBUG){
-                printf("\n|||||||||||||IO EXIT||||||||||||||||\n");
-                printf("Complete Size: %d\n", complete_queue->size);
-                printf("IO Size: %d\n", io_queue->size);
-                printf("CPU Size: %d\n", ready_queue->size);
-                printf("Proc Count: %d\n", *proc_count);
-                printf("SemaphoreVal: %d\n", sem_value);
-                printf("MTX result: %d\n\n", mtx_result);
-            }
-            
-
 
             // if all jobs are in complete queue and
             // one other thread has finished and
             // the mutex was able to be locked
             if (complete_queue->size == *proc_count 
                     && sem_value == 1 
-                    && mtx_result == 0 ) {
-                pthread_mutex_unlock(&thread_running_mtx);
+                    && fp_done == 1) {
                 break;
             }
-            pthread_mutex_unlock(&thread_running_mtx);
             continue;
         }
 
-
         pthread_mutex_lock(&ioq_mtx);
+        if(DEBUG){
+            printf("\n|||||||||||||IO LOOP||||||||||||||||\n");
+            printf("Complete Size: %d\n", complete_queue->size);
+            printf("IO Size: %d\n", io_queue->size);
+            printf("CPU Size: %d\n", ready_queue->size);
+            printf("Proc Count: %d\n", *proc_count);
+            // printf("SemaphoreVal: %d\n", sem_value);
+            // printf("MTX result: %d\n\n", mtx_result);
+        }
         proc = popFirst(io_queue); // grab first process from io_queue
         pthread_mutex_unlock(&ioq_mtx);
+
+        if (proc == NULL) {
+            continue;
+        }
 
         printf("\nProcess Popped (IO)\n");
         print_process(proc);

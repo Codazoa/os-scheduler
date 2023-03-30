@@ -107,6 +107,7 @@ void *parse_file(void *arg){
             //stop the program
             sem_post(&thread_access); // increment semaphore for later checking
             pthread_mutex_unlock(&thread_running_mtx);
+            fp_done = 1;
             if(DEBUG) {printf("Exiting File Parser Thread\n"); }
             return NULL;
         } else {

@@ -36,6 +36,7 @@ extern pthread_mutex_t proc_count_mtx;
 
 extern pthread_mutex_t thread_running_mtx;
 extern pthread_cond_t thread_running_cond;
+extern int fp_done;
 
 typedef struct {
     int algo; // which algorithm we are using

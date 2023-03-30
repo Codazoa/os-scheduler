@@ -29,6 +29,7 @@ pthread_mutex_t proc_count_mtx = PTHREAD_MUTEX_INITIALIZER;
 // mutex to handle starting of threads
 pthread_mutex_t thread_running_mtx = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t thread_running_cond = PTHREAD_COND_INITIALIZER;
+int fp_done = 0;
 
 int main(int argc, char const *argv[]) {
     
@@ -192,10 +193,6 @@ int main(int argc, char const *argv[]) {
         exit(1);
     }
 
-    // pthread_mutex_lock(&thread_running_mtx);
-    // pthread_cond_wait(&thread_running_cond, &thread_running_mtx);
-    // pthread_mutex_unlock(&thread_running_mtx);
-
     printf("Created IO thread\n");
     sem_post(&thread_access);
 
@@ -208,10 +205,6 @@ int main(int argc, char const *argv[]) {
         exit(1);
     };
 
-    // pthread_mutex_lock(&thread_running_mtx);
-    // pthread_cond_wait(&thread_running_cond, &thread_running_mtx);
-    // pthread_mutex_unlock(&thread_running_mtx);
-
     sem_post(&thread_access);
 
     // create input file parsing thread
@@ -223,19 +216,12 @@ int main(int argc, char const *argv[]) {
         exit(1);
     }
 
-    // pthread_mutex_lock(&thread_running_mtx);
-    // pthread_cond_wait(&thread_running_cond, &thread_running_mtx);
-    // pthread_mutex_unlock(&thread_running_mtx);
-
     // Get start time
     struct timeval total_start;
     gettimeofday(&total_start, NULL); 
 
     // set semaphore to 3 to allow threads to start running
     sem_post(&thread_access);
-    
-    
-
 
     // join threads and close file
     pthread_join(file_parser, NULL);
@@ -269,7 +255,7 @@ int main(int argc, char const *argv[]) {
 
         t_time = timeval_diff(start, end);
 
-        timeval_add(total_turnaround, t_time);
+        total_turnaround = timeval_add(total_turnaround, t_time);
 
         cursor = cursor->next;
     }
@@ -282,7 +268,7 @@ int main(int argc, char const *argv[]) {
     struct timeval total_wait = {0, 0};
     cursor = complete_queue->head;
     while (cursor) {
-        timeval_add(total_wait, cursor->proc->wait);
+        total_wait = timeval_add(total_wait, cursor->proc->wait);
 
         cursor = cursor->next;
     }
