@@ -81,15 +81,15 @@ void *start_scheduler(void *arg) {
 
         // printf("New Process\nPriority: %d\n", next_proc->priority);
         // // sleep for its time
-        printf("Sleep for %d\n", get_burst_time(next_proc));
-        sleep(get_burst_time(next_proc)/10);
+        printf("\nCPU: Sleep proc %d for %d\n", next_proc->priority, get_burst_time(next_proc));
+        sleep(get_burst_time(next_proc)/1000);
         next_proc->index++;
 
-        if (next_proc->index == next_proc->burst_count - 1) {
+        if (next_proc->index >= next_proc->burst_count - 1) {
             pthread_mutex_lock(&completeq_mtx);
             append(complete_queue, next_proc);
             pthread_mutex_unlock(&completeq_mtx);
-            printf("Process complete: Adding to complete queue\n");
+            printf("\nProcess %d complete: Adding to complete queue\n", next_proc->priority);
             continue;
         }
 

@@ -32,8 +32,8 @@ void *startIO(void *arg) {
             printf("\nProcess Popped (IO)\n");
             print_process(proc);
 
-            printf("Sleep for %d\n", get_burst_time(proc));
-            sleep(get_burst_time(proc)/10); // sleep for designated burst time
+            printf("\nIO: Sleep proc %d for %d\n", proc->priority, get_burst_time(proc));
+            sleep(get_burst_time(proc)/1000); // sleep for designated burst time
             proc->index++;
 
             pthread_mutex_lock(&readyq_mtx);
