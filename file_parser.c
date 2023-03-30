@@ -76,7 +76,9 @@ void *parse_file(void *arg){
                 print_process(new_process);
             }
 
+            pthread_mutex_lock(&proc_count_mtx);
             (*proc_count)++; // increment process count
+            pthread_mutex_unlock(&proc_count_mtx);
 
             pthread_mutex_lock(&readyq_mtx); // lock ready queue
             append(ready_queue, new_process); // add new process to ready queue

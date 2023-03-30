@@ -23,6 +23,7 @@ extern pthread_mutex_t proc_count_mtx;
 typedef struct {
     DoublyLinkedList *io_queue; // pointer to shared io_queue
     DoublyLinkedList *ready_queue; // pointer to shared ready_queue
+    DoublyLinkedList *complete_queue;
     int *proc_count; // share the process count
 } io_args_t;
 

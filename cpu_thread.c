@@ -46,6 +46,11 @@ void *start_scheduler(void *arg) {
         // check if there is anything in the ready queue
         if (isEmpty(ready_queue)){
             // printf("ready Q is empty\n");
+            int sem_value;
+            sem_getvalue(&thread_access, &sem_value);
+            if (complete_queue->size == *proc_count && sem_value == 2) {
+                break;
+            }
             continue;
         }
 
@@ -72,8 +77,7 @@ void *start_scheduler(void *arg) {
         printf("\nProcess popped (cpu)\n");
         print_process(next_proc);
 
-        // printf("New Process\nPriority: %d\n", next_proc->priority);
-        // // sleep for its time
+        // sleep for its time
         printf("\nCPU: Sleep proc %d for %d\n", next_proc->priority, get_burst_time(next_proc));
         sleep(get_burst_time(next_proc)/1000);
         next_proc->index++;
@@ -97,5 +101,6 @@ void *start_scheduler(void *arg) {
         pthread_mutex_unlock(&ioq_mtx);
     }
 
+    sem_post(&thread_access);
     return NULL;
 }

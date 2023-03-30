@@ -19,6 +19,7 @@ void *startIO(void *arg) {
     io_args_t *io_args = (io_args_t *) arg;
     DoublyLinkedList *io_queue = io_args->io_queue;
     DoublyLinkedList *ready_queue = io_args->ready_queue;
+    DoublyLinkedList *complete_queue = io_args->complete_queue;
     int *proc_count = io_args->proc_count;
 
     Process *proc; // variable used to hold current process
@@ -29,7 +30,6 @@ void *startIO(void *arg) {
     while(1){
 
         if(!isEmpty(io_queue)){
-
             pthread_mutex_lock(&ioq_mtx);
             proc = popFirst(io_queue); // grab first process from io_queue
             pthread_mutex_unlock(&ioq_mtx);
@@ -44,10 +44,16 @@ void *startIO(void *arg) {
             pthread_mutex_lock(&readyq_mtx);
             append(ready_queue, proc); // send back to cpu_scheduler
             pthread_mutex_unlock(&readyq_mtx);
+        } else {
+            int sem_value;
+            sem_getvalue(&thread_access, &sem_value);
+            if (complete_queue->size == *proc_count && sem_value > 0) {
+                break;
+            }
         }
 
 
     }
-
+    sem_post(&thread_access);
     return NULL;
 }
