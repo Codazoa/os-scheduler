@@ -55,13 +55,13 @@ Process *popFirst(DoublyLinkedList *list){
     if (oldHead == NULL){                       //Make sure list isn't empty
         return NULL;
     }
+    storage = oldHead->proc;                    //Store the head proc in storage
 
     if(list->head->next != NULL){               //Is there a next node
-        storage = oldHead->proc;
         list->head = list->head->next;          //Make the head's next the new head
         list->head->prev = NULL;                //Clear the old head from the current head's link
-        free(oldHead);                          //Free the memory allocated to oldHead
     }
+    free(oldHead);                              //Free the memory allocated to oldHead
     list->size--;                               //Decrement list size
     return storage;                             //Return the process
 }
