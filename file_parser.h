@@ -10,8 +10,7 @@
 
 #include "process.h"
 #include "double_linked_list.h"
-
-#define DEBUG 1
+#include "options.h"
 
 
 // One thread is responsible for reading the input file. This corresponds to 

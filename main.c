@@ -12,8 +12,8 @@
 #include "file_parser.h"
 #include "double_linked_list.h"
 #include "process.h"
+#include "options.h"
 
-#define DEBUG 1 // toggle for debug purposes
 #define SHM_SIZE sizeof(Process) // shared memory size
 
 sem_t thread_access; // allow threads to start running and communicate when done

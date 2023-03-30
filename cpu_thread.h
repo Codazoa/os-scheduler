@@ -10,8 +10,7 @@
 
 #include "double_linked_list.h"
 #include "process.h"
-
-#define DEBUG 1
+#include "options.h"
 
 
 // This thread is analogous to the kernel’s CPU scheduler. Its job is to check
