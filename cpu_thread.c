@@ -35,9 +35,14 @@ void *start_scheduler(void *arg) {
     int *proc_count = cpu_args->proc_count;
 
     if(DEBUG){
+        printf("Created CPU Thread\n");
         printf("Algorithm is %d\n", algo); //DEBUG
         printf("Quantum is %d\n", quantum);
     }
+
+    // pthread_mutex_lock(&thread_running_mtx);
+    // pthread_cond_signal(&thread_running_cond);
+    // pthread_mutex_unlock(&thread_running_mtx);
 
     // wait for main to allow us to continue
     sem_wait(&thread_access);
@@ -101,6 +106,7 @@ void *start_scheduler(void *arg) {
         pthread_mutex_unlock(&ioq_mtx);
     }
 
+    if(DEBUG) {printf("Exiting CPU Thread\n"); }
     sem_post(&thread_access);
     return NULL;
 }

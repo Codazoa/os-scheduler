@@ -22,10 +22,16 @@ void *parse_file(void *arg){
     DoublyLinkedList *ready_queue = parser_args->ready_queue;
     int *proc_count = parser_args->proc_count;
 
+    // pthread_mutex_lock(&thread_running_mtx);
+    // pthread_cond_signal(&thread_running_cond);
+    // pthread_mutex_unlock(&thread_running_mtx);
+
+    // pthread_mutex_lock(&thread_running_mtx);
+
     // wait for main to allow us to continue
     sem_wait(&thread_access);
 
-    if (DEBUG) {printf("Parsing File\n");}
+    if (DEBUG) {printf("Created File Parser Thread\n");}
 
     char line[100], *word;
 
@@ -100,6 +106,8 @@ void *parse_file(void *arg){
         } else if (strcmp(word, "stop") == 0) {
             //stop the program
             sem_post(&thread_access); // increment semaphore for later checking
+            pthread_mutex_unlock(&thread_running_mtx);
+            if(DEBUG) {printf("Exiting File Parser Thread\n"); }
             return NULL;
         } else {
             fprintf(stderr, "Error: invalid input. please check that the file is correct\n");

@@ -34,6 +34,9 @@ extern pthread_mutex_t ioq_mtx;
 extern pthread_mutex_t completeq_mtx;
 extern pthread_mutex_t proc_count_mtx;
 
+extern pthread_mutex_t thread_running_mtx;
+extern pthread_cond_t thread_running_cond;
+
 typedef struct {
     int algo; // which algorithm we are using
     int quantum; // optionally what the quantum is (default=0)

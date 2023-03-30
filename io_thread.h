@@ -21,6 +21,9 @@ extern pthread_mutex_t readyq_mtx;
 extern pthread_mutex_t ioq_mtx;
 extern pthread_mutex_t proc_count_mtx;
 
+extern pthread_mutex_t thread_running_mtx;
+extern pthread_cond_t thread_running_cond;
+
 typedef struct {
     DoublyLinkedList *io_queue; // pointer to shared io_queue
     DoublyLinkedList *ready_queue; // pointer to shared ready_queue

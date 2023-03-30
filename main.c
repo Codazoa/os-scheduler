@@ -18,13 +18,17 @@
 
 sem_t thread_access; // allow threads to start running and communicate when done
 
-// mutex's to handle access to shared queues
+// mutexs to handle access to shared queues
 pthread_mutex_t readyq_mtx = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t ioq_mtx = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t completeq_mtx = PTHREAD_MUTEX_INITIALIZER;
 
 // mutex for access to proccess count integer
 pthread_mutex_t proc_count_mtx = PTHREAD_MUTEX_INITIALIZER;
+
+// mutex to handle starting of threads
+pthread_mutex_t thread_running_mtx = PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t thread_running_cond = PTHREAD_COND_INITIALIZER;
 
 int main(int argc, char const *argv[]) {
     
@@ -176,23 +180,8 @@ int main(int argc, char const *argv[]) {
     // create shared integer in shared memory
     proc_count = (int *) calloc(1, sizeof(int)); 
 
-    // create input file parsing thread
-    pthread_t file_parser;
-    Parser_args_t parser_args = { file_ptr, ready_queue, proc_count};
-    if (pthread_create(&file_parser, NULL, parse_file, &parser_args) != 0) {
-        // check if thread was successfully created
-        fprintf(stderr, "Error creating file_parser thread\n");
-        exit(1);
-    }
 
-    // create thread for cpu scheduler
-    pthread_t cpu_thread;
-    CPU_args_t cpu_args = { algo, quantum, ready_queue, io_queue, complete_queue, proc_count}; 
-    if (pthread_create(&cpu_thread, NULL, start_scheduler, &cpu_args) != 0) {
-        // check if thread was successfully created
-        fprintf(stderr, "Error creating CPU_thread\n");
-        exit(1);
-    };
+    pthread_mutex_lock(&thread_running_mtx);
 
     // create io thread
     pthread_t io_thread;
@@ -203,14 +192,49 @@ int main(int argc, char const *argv[]) {
         exit(1);
     }
 
+    // pthread_mutex_lock(&thread_running_mtx);
+    // pthread_cond_wait(&thread_running_cond, &thread_running_mtx);
+    // pthread_mutex_unlock(&thread_running_mtx);
+
+    printf("Created IO thread\n");
+    sem_post(&thread_access);
+
+    // create thread for cpu scheduler
+    pthread_t cpu_thread;
+    CPU_args_t cpu_args = { algo, quantum, ready_queue, io_queue, complete_queue, proc_count}; 
+    if (pthread_create(&cpu_thread, NULL, start_scheduler, &cpu_args) != 0) {
+        // check if thread was successfully created
+        fprintf(stderr, "Error creating CPU_thread\n");
+        exit(1);
+    };
+
+    // pthread_mutex_lock(&thread_running_mtx);
+    // pthread_cond_wait(&thread_running_cond, &thread_running_mtx);
+    // pthread_mutex_unlock(&thread_running_mtx);
+
+    sem_post(&thread_access);
+
+    // create input file parsing thread
+    pthread_t file_parser;
+    Parser_args_t parser_args = { file_ptr, ready_queue, proc_count};
+    if (pthread_create(&file_parser, NULL, parse_file, &parser_args) != 0) {
+        // check if thread was successfully created
+        fprintf(stderr, "Error creating file_parser thread\n");
+        exit(1);
+    }
+
+    // pthread_mutex_lock(&thread_running_mtx);
+    // pthread_cond_wait(&thread_running_cond, &thread_running_mtx);
+    // pthread_mutex_unlock(&thread_running_mtx);
+
     // Get start time
     struct timeval total_start;
     gettimeofday(&total_start, NULL); 
 
     // set semaphore to 3 to allow threads to start running
     sem_post(&thread_access);
-    sem_post(&thread_access);
-    sem_post(&thread_access);
+    
+    
 
 
     // join threads and close file

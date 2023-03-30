@@ -26,6 +26,9 @@ extern sem_t thread_access;
 extern pthread_mutex_t readyq_mtx;
 extern pthread_mutex_t proc_count_mtx;
 
+extern pthread_mutex_t thread_running_mtx;
+extern pthread_cond_t thread_running_cond;
+
 typedef struct {
     FILE *fp; // file pointer for our input file (already valid)
     DoublyLinkedList *ready_queue; // pointer to ready_queue shared memory
