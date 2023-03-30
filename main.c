@@ -37,13 +37,14 @@ int main(int argc, char const *argv[]) {
     int quantum = 0;
     FILE *file_ptr;
     char file_name[128];
+    char alg_type[32];
 
     // step through given arguments
     for(int i = 1; i < argc; i++){
         // algorithm option
         if( strcmp(argv[i], "-alg") == 0 ){
             // check next argument for algorithm to use
-            
+            strcpy(alg_type, argv[i+1]);
             if (strcmp(argv[i+1], "FCFS") == 0) {
                 if(DEBUG) { printf("Activating FIRST COME FIRST SERVE\n"); }
                 algo = 1;
@@ -268,6 +269,7 @@ int main(int argc, char const *argv[]) {
     
     // print results
     printf("Input File Name                 : %s\n", file_name);
+    printf("CPU Scheduling Alg              : %s\n", alg_type);
     printf("Throughput                      : %f\n", throughput);
     printf("Avg. Turnaround Time            : %f\n", avg_turnaround);
     printf("Avg. Waiting Time in Ready Queue: %f\n", avg_wait);
