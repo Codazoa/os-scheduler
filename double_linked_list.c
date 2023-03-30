@@ -84,6 +84,8 @@ Process *popHighP(DoublyLinkedList *list){
         if(curNode->proc->priority > priorityCounter){
             if(curNode->proc->priority == 10){  //Check if this is the highest priority
                 storage = curNode->proc;        //Move the proc to storage
+                curNode->next->prev = curNode->prev;//Cut curNode out of the list
+                curNode->prev->next = curNode->next;//Cut curNode out of the list
                 free(curNode);                  //Free the memory used by node
                 list->size--;                   //Decrement list size
                 return storage;                 //If it is, just return it
