@@ -239,10 +239,22 @@ int main(int argc, char const *argv[]) {
 
 
     //wait time
+    struct timeval total_wait = {0, 0};
+    cursor = complete_queue->head;
+    while (cursor) {
+        timeval_add(total_wait, cursor->proc->wait);
+
+        cursor = cursor->next;
+    }
+
+    float total_wait_ms = ((float)total_wait.tv_sec) * 1000 + ((float)total_wait.tv_usec) / 1000;
+
+    float avg_wait = total_wait_ms / complete_queue->size;
 
     
     // print results
-    printf("Avg. Turnaround Time        : %f", avg_turnaround);
+    printf("Avg. Turnaround Time            : %f", avg_turnaround);
+    printf("Avg. Waiting Time in Ready Queue: %f", avg_wait);
     
     // disconnect shared memory
     shmdt(ready_queue);
