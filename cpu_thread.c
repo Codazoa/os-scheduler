@@ -58,31 +58,33 @@ void *start_scheduler(void *arg) {
 
         Process *next_proc;
 
-
+        pthread_mutex_lock(&readyq_mtx);                    //Lock ready queue
+        
+        //Check what algorithm we should follow for popping off of the DLL
         switch (algo) {
             case 1: //First Come First Serve
-                // pop first off ready queue
-                pthread_mutex_lock(&readyq_mtx);
                 next_proc = popFirst(ready_queue);
-                pthread_mutex_unlock(&readyq_mtx);
-
-                // printf("New Process\nPriority: %d\n", next_proc->priority);
-                // // sleep for its time
-                printf("Sleep for %d\n", get_next_burst(next_proc));
-                sleep(get_next_burst(next_proc));
-
-                // push it onto the io queue 
-                pthread_mutex_lock(&ioq_mtx);
-                append(io_queue, next_proc);
-                pthread_mutex_unlock(&ioq_mtx);
                 break;
             case 2: //Shortest Job First
+                next_proc = popLeastTimeIndv(ready_queue);
                 break;
             case 3: //Priority Scheduling
+                next_proc = popHighP(ready_queue);
                 break; 
             case 4: //Round Robin
                 break;
         }
+        pthread_mutex_unlock(&readyq_mtx);                  //Unlock ready queue
+
+        // printf("New Process\nPriority: %d\n", next_proc->priority);
+        // // sleep for its time
+        printf("Sleep for %d\n", get_next_burst(next_proc));
+        sleep(get_next_burst(next_proc));
+
+        // push it onto the io queue 
+        pthread_mutex_lock(&ioq_mtx);
+        append(io_queue, next_proc);
+        pthread_mutex_unlock(&ioq_mtx);
     }
 
     return NULL;
