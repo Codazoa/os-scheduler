@@ -47,7 +47,7 @@ void *startIO(void *arg) {
         } else {
             int sem_value;
             sem_getvalue(&thread_access, &sem_value);
-            if (complete_queue->size == *proc_count && sem_value > 0) {
+            if (complete_queue->size == *proc_count && sem_value == 1) {
                 break;
             }
         }
