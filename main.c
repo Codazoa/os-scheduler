@@ -212,8 +212,37 @@ int main(int argc, char const *argv[]) {
     fclose(file_ptr);
 
     // calculate results
+    //throughput
+    //turn around time
+    
+    struct timeval total_turnaround = {0, 0};
 
+    struct timeval end;
+    struct timeval start;
+    struct timeval t_time;
+
+    Node *cursor = complete_queue->head;
+    while (cursor) {
+        end = cursor->proc->end;
+        start = cursor->proc->start;
+
+        t_time = timeval_diff(start, end);
+
+        timeval_add(total_turnaround, t_time);
+
+        cursor = cursor->next;
+    }
+
+   float total_turnaround_ms = ((float)total_turnaround.tv_sec) * 1000 + ((float)total_turnaround.tv_usec) / 1000;
+
+   float avg_turnaround = total_turnaround_ms / complete_queue->size;
+
+
+    //wait time
+
+    
     // print results
+    printf("Avg. Turnaround Time        : %f", avg_turnaround);
     
     // disconnect shared memory
     shmdt(ready_queue);
