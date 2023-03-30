@@ -36,12 +36,14 @@ int main(int argc, char const *argv[]) {
     int algo = 0;
     int quantum = 0;
     FILE *file_ptr;
+    char file_name[128];
 
     // step through given arguments
     for(int i = 1; i < argc; i++){
         // algorithm option
         if( strcmp(argv[i], "-alg") == 0 ){
             // check next argument for algorithm to use
+            
             if (strcmp(argv[i+1], "FCFS") == 0) {
                 if(DEBUG) { printf("Activating FIRST COME FIRST SERVE\n"); }
                 algo = 1;
@@ -74,6 +76,7 @@ int main(int argc, char const *argv[]) {
 
         // input option
         if (strcmp(argv[i], "-input") == 0) {
+            strcpy(file_name, argv[i+1]);
             // check next argument for file_name
             if(DEBUG) { printf("ATTEMPTING TO OPEN FILE %s\n", argv[i+1]); }
             file_ptr = fopen(argv[i+1], "r");
@@ -223,11 +226,10 @@ int main(int argc, char const *argv[]) {
     // calculate results
     struct timeval total_runtime = timeval_diff(total_start, total_end);
     float total_runtime_ms = ((float)total_runtime.tv_sec) * 1000 + ((float)total_runtime.tv_usec) / 1000;
+    
     //throughput
     float throughput = complete_queue->size / total_runtime_ms;
     
-
-
     //turn around time
     struct timeval total_turnaround = {0, 0};
 
@@ -265,9 +267,10 @@ int main(int argc, char const *argv[]) {
 
     
     // print results
-    printf("Throughput                      : %f", throughput);
-    printf("Avg. Turnaround Time            : %f", avg_turnaround);
-    printf("Avg. Waiting Time in Ready Queue: %f", avg_wait);
+    printf("Input File Name                 : %f\n", file_name);
+    printf("Throughput                      : %f\n", throughput);
+    printf("Avg. Turnaround Time            : %f\n", avg_turnaround);
+    printf("Avg. Waiting Time in Ready Queue: %f\n", avg_wait);
     
     // disconnect shared memory
     shmdt(ready_queue);
