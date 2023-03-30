@@ -21,6 +21,9 @@ void *parse_file(void *arg){
     FILE *fp = parser_args->fp;
     DoublyLinkedList *ready_queue = parser_args->ready_queue;
 
+    // wait for main to allow us to continue
+    sem_wait(&thread_access);
+
     if (DEBUG) {printf("Parsing File\n");}
 
     char line[100], *word;

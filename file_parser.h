@@ -6,11 +6,14 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <pthread.h>
+#include <semaphore.h>
 
 #include "process.h"
 #include "double_linked_list.h"
 
 #define DEBUG 1
+
+extern sem_t thread_access;
 
 // One thread is responsible for reading the input file. This corresponds to 
 // user activity causing new processes to come into existence. Any time this 

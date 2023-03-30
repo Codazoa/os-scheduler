@@ -38,16 +38,8 @@ void *start_scheduler(void *arg) {
         printf("Quantum is %d\n", quantum);
     }
 
-
-    //debug
-    // sleep(5);
-    // pthread_mutex_lock(&readyq_mtx);
-    // while(!isEmpty(ready_queue)){
-    //     // Process *data = popFirst(ready_queue);
-    //     Process *data = popFirst(ready_queue);
-    //     print_process(data);
-    // }
-    // pthread_mutex_unlock(&readyq_mtx);
+    // wait for main to allow us to continue
+    sem_wait(&thread_access);
     
     while (1) {
         // check if there is anything in the ready queue

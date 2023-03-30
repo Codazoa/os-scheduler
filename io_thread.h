@@ -1,10 +1,14 @@
 #ifndef IO_THREAD_H
 #define IO_THREAD_H
 
-#include "double_linked_list.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <pthread.h>
+#include <semaphore.h>
+
+#include "double_linked_list.h"
+
+extern sem_t thread_access;
 
 // This thread simulates the I/O subsystem. If there is anything waiting in
 // the I/O queue, select a process in FIFO order. Sleep for the given I/O 

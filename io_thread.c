@@ -22,9 +22,13 @@ void *startIO(void *arg) {
 
     Process *proc; // variable used to hold current process
 
+    // wait for main to allow us to continue
+    sem_wait(&thread_access);
+
     while(1){
 
         if(!isEmpty(io_queue)){
+
             pthread_mutex_lock(&ioq_mtx);
             proc = popFirst(io_queue); // grab first process from io_queue
             pthread_mutex_unlock(&ioq_mtx);
@@ -41,7 +45,7 @@ void *startIO(void *arg) {
             pthread_mutex_unlock(&readyq_mtx);
         }
 
-        // check if we got the signal to end and break
+
     }
 
     return NULL;

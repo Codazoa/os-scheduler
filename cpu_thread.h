@@ -6,11 +6,14 @@
 #include <unistd.h>
 #include <pthread.h>
 #include <sys/select.h>
+#include <semaphore.h>
 
 #include "double_linked_list.h"
 #include "process.h"
 
 #define DEBUG 1
+
+extern sem_t thread_access;
 
 // This thread is analogous to the kernel’s CPU scheduler. Its job is to check
 // the ready queue for processes and, if there are any, pick one from the queue

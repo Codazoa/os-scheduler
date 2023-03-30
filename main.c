@@ -5,6 +5,7 @@
 #include <sys/types.h>
 #include <sys/ipc.h>
 #include <sys/shm.h>
+#include <semaphore.h>
 
 #include "cpu_thread.h"
 #include "io_thread.h"
@@ -15,6 +16,9 @@
 #define DEBUG 1 // toggle for debug purposes
 #define SHM_SIZE sizeof(Process) // shared memory size
 
+sem_t thread_access; // allow threads to start running and communicate when done
+
+// mutex's to handle access to shared queues
 pthread_mutex_t readyq_mtx = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t ioq_mtx = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t completeq_mtx = PTHREAD_MUTEX_INITIALIZER;
@@ -101,6 +105,10 @@ int main(int argc, char const *argv[]) {
     // End input
     ///////////////////////////////////////////////////
 
+    // set up semaphore
+    // initialize to 0 to synchronize threads running
+    sem_init(&thread_access, 0, 0);
+
     // create shared memory id for various queues
     int shm_readyq_id = shmget(IPC_PRIVATE, sizeof(DoublyLinkedList), IPC_CREAT | 0666);
     if (shm_readyq_id < 0) {
@@ -171,6 +179,12 @@ int main(int argc, char const *argv[]) {
         exit(1);
     }
 
+    // set semaphore to 3 to allow threads to start running
+    sem_post(&thread_access);
+    sem_post(&thread_access);
+    sem_post(&thread_access);
+
+
     // join threads and close file
     pthread_join(file_parser, NULL);
     pthread_join(io_thread, NULL);
@@ -178,7 +192,7 @@ int main(int argc, char const *argv[]) {
     fclose(file_ptr);
 
     // calculate results
-    
+
     // print results
     
     // disconnect shared memory
