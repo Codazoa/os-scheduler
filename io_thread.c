@@ -19,6 +19,7 @@ void *startIO(void *arg) {
     io_args_t *io_args = (io_args_t *) arg;
     DoublyLinkedList *io_queue = io_args->io_queue;
     DoublyLinkedList *ready_queue = io_args->ready_queue;
+    int *proc_count = io_args->proc_count;
 
     Process *proc; // variable used to hold current process
 

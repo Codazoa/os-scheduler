@@ -23,6 +23,9 @@ pthread_mutex_t readyq_mtx = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t ioq_mtx = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t completeq_mtx = PTHREAD_MUTEX_INITIALIZER;
 
+// mutex for access to proccess count integer
+pthread_mutex_t proc_count_mtx = PTHREAD_MUTEX_INITIALIZER;
+
 int main(int argc, char const *argv[]) {
     
     ////////////////////////////////////////////////
@@ -109,7 +112,7 @@ int main(int argc, char const *argv[]) {
     // initialize to 0 to synchronize threads running
     sem_init(&thread_access, 0, 0);
 
-    // create shared memory id for various queues
+    // create shared memory ids
     int shm_readyq_id = shmget(IPC_PRIVATE, sizeof(DoublyLinkedList), IPC_CREAT | 0666);
     if (shm_readyq_id < 0) {
         perror("shmget shm_readyq_id\n");
@@ -127,6 +130,13 @@ int main(int argc, char const *argv[]) {
         perror("shmget shm_completeq_id\n");
         exit(1);
     }
+
+    int shm_proc_count_id = shmget(IPC_PRIVATE, sizeof(int), IPC_CREAT | 0666);
+    if (shm_proc_count_id < 0) {
+        perror("shmget shm_proc_count_id\n");
+        exit(1);
+    }
+ 
 
     // create shared memory pointers for various queues
     DoublyLinkedList *ready_queue = (DoublyLinkedList*) shmat(shm_readyq_id, NULL, 0);
@@ -147,14 +157,24 @@ int main(int argc, char const *argv[]) {
         exit(1);
     }
 
+    // create shared integer pointer
+    int *proc_count = (int*) shmat(shm_proc_count_id, NULL, 0);
+    if (proc_count == (void*) -1) {
+        perror("shmat proc_count\n");
+        exit(1);
+    }
+
     // create lists in the shared memory
     ready_queue = create_list();
     io_queue = create_list();
     complete_queue = create_list();
 
+    // create shared integer in shared memory
+    proc_count = (int *) calloc(1, sizeof(int)); 
+
     // create input file parsing thread
     pthread_t file_parser;
-    Parser_args_t parser_args = { file_ptr, ready_queue };
+    Parser_args_t parser_args = { file_ptr, ready_queue, proc_count};
     if (pthread_create(&file_parser, NULL, parse_file, &parser_args) != 0) {
         // check if thread was successfully created
         fprintf(stderr, "Error creating file_parser thread\n");
@@ -163,7 +183,7 @@ int main(int argc, char const *argv[]) {
 
     // create thread for cpu scheduler
     pthread_t cpu_thread;
-    CPU_args_t cpu_args = { algo, quantum, ready_queue, io_queue, complete_queue }; 
+    CPU_args_t cpu_args = { algo, quantum, ready_queue, io_queue, complete_queue, proc_count}; 
     if (pthread_create(&cpu_thread, NULL, start_scheduler, &cpu_args) != 0) {
         // check if thread was successfully created
         fprintf(stderr, "Error creating CPU_thread\n");
@@ -172,7 +192,7 @@ int main(int argc, char const *argv[]) {
 
     // create io thread
     pthread_t io_thread;
-    io_args_t io_args = { io_queue, ready_queue };
+    io_args_t io_args = { io_queue, ready_queue, proc_count };
     if (pthread_create(&io_thread, NULL, startIO, &io_args) != 0){
         // check if thread was successfully created
         fprintf(stderr, "Error creating IO_thread\n");

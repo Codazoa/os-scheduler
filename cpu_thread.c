@@ -32,6 +32,7 @@ void *start_scheduler(void *arg) {
     DoublyLinkedList *ready_queue = cpu_args->ready_queue;
     DoublyLinkedList *io_queue = cpu_args->io_queue;
     DoublyLinkedList *complete_queue = cpu_args->complete_queue;
+    int *proc_count = cpu_args->proc_count;
 
     if(DEBUG){
         printf("Algorithm is %d\n", algo); //DEBUG

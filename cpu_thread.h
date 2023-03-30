@@ -13,7 +13,6 @@
 
 #define DEBUG 1
 
-extern sem_t thread_access;
 
 // This thread is analogous to the kernel’s CPU scheduler. Its job is to check
 // the ready queue for processes and, if there are any, pick one from the queue
@@ -29,9 +28,12 @@ extern sem_t thread_access;
 
 // extern int parse_cpu_pipe[2];
 // extern int cpu_io_pipe[2];
+extern sem_t thread_access;
+
 extern pthread_mutex_t readyq_mtx;
 extern pthread_mutex_t ioq_mtx;
 extern pthread_mutex_t completeq_mtx;
+extern pthread_mutex_t proc_count_mtx;
 
 typedef struct {
     int algo; // which algorithm we are using
@@ -39,6 +41,7 @@ typedef struct {
     DoublyLinkedList *ready_queue; // pointer to ready_queue shared memory
     DoublyLinkedList *io_queue; // pointer to io_queue shared memory
     DoublyLinkedList *complete_queue; // complete_queue shared memory
+    int *proc_count; // share the process count
 } CPU_args_t;
 
 void *start_scheduler(void *arg);
