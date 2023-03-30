@@ -7,6 +7,7 @@
 #include <semaphore.h>
 
 #include "double_linked_list.h"
+#include "options.h"
 
 
 // This thread simulates the I/O subsystem. If there is anything waiting in
