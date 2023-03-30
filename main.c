@@ -177,7 +177,8 @@ int main(int argc, char const *argv[]) {
     pthread_join(cpu_thread, NULL);
     fclose(file_ptr);
 
-
+    // calculate results
+    
     // print results
     
     // disconnect shared memory
