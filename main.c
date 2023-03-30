@@ -16,6 +16,8 @@
 #define SHM_SIZE sizeof(Process) // shared memory size
 
 pthread_mutex_t readyq_mtx = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t ioq_mtx = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t completeq_mtx = PTHREAD_MUTEX_INITIALIZER;
 
 int main(int argc, char const *argv[]) {
     

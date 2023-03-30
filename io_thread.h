@@ -10,7 +10,8 @@
 // burst time (to simulate waiting on an I/O device) and then put the process
 // back in the ready queue. Repeat until there are no more jobs.
 
-extern int cpu_io_pipe[2];
+extern pthread_mutex_t readyq_mtx;
+extern pthread_mutex_t ioq_mtx;
 
 typedef struct {
     DoublyLinkedList *io_queue;

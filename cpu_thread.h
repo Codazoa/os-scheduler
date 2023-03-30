@@ -27,6 +27,8 @@
 // extern int parse_cpu_pipe[2];
 // extern int cpu_io_pipe[2];
 extern pthread_mutex_t readyq_mtx;
+extern pthread_mutex_t ioq_mtx;
+extern pthread_mutex_t completeq_mtx;
 
 typedef struct {
     int algo; // which algorithm we are using
