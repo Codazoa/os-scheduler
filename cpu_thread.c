@@ -86,6 +86,11 @@ void *start_scheduler(void *arg) {
         next_proc->index++;
 
         if (next_proc->index >= next_proc->burst_count - 1) {
+
+            struct timeval end_time;
+            gettimeofday(&end_time, NULL);
+            next_proc->end = end_time;
+
             pthread_mutex_lock(&completeq_mtx);
             append(complete_queue, next_proc);
             pthread_mutex_unlock(&completeq_mtx);

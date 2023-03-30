@@ -174,7 +174,7 @@ int main(int argc, char const *argv[]) {
     // join threads and close file
     pthread_join(file_parser, NULL);
     pthread_join(io_thread, NULL);
-    // pthread_join(cpu_thread, NULL);
+    pthread_join(cpu_thread, NULL);
     fclose(file_ptr);
 
 

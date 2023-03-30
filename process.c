@@ -1,7 +1,7 @@
 #include "process.h"
 
 // create a new process with the given priority and burst time array
-Process *create_proc(int priority, int *burst_times, int burst_count) {
+Process *create_proc(int priority, int *burst_times, int burst_count, struct timeval start_time) {
     Process *new_proc = malloc(sizeof(Process));
     new_proc->priority = priority;
     for (int i = 0; i < burst_count; i++) {
@@ -9,7 +9,10 @@ Process *create_proc(int priority, int *burst_times, int burst_count) {
     } 
     new_proc->index = 0;
     new_proc->burst_count = burst_count;
-    memset(new_proc->start_wait_end_time, 0, sizeof(new_proc->start_wait_end_time));
+    new_proc->start = start_time;
+
+    memset(&new_proc->wait, 0, sizeof(struct timeval));
+    memset(&new_proc->end, 0, sizeof(struct timeval));
     return new_proc;
 }
 
@@ -31,18 +34,50 @@ void print_process(Process *proc){
         printf("%d ", proc->burst_times[i]);
     }
     printf("\n");
-    printf("StartTime: %ld\nWaitTime: %ld\nEndTime: %ld\n", 
-        proc->start_wait_end_time[0],proc->start_wait_end_time[1],proc->start_wait_end_time[2]);
+    printf("StartTime: %ld.%ld\n", 
+        proc->start.tv_sec,
+        proc->start.tv_usec);
+    printf("WaitTime: %ld.%ld\n", 
+        proc->wait.tv_sec,
+        proc->wait.tv_usec);
+    printf("EndTime: %ld.%ld\n",
+        proc->end.tv_sec,
+        proc->end.tv_usec);
 }
 
 void calcWaitTime(Process *proc) {
     struct timeval current_time;
     gettimeofday(&current_time, NULL);
 
-    // convert time to ms
-    long int time_diff = (current_time.tv_sec - proc->entered_ready.tv_sec) * 1000000 +
-                         (current_time.tv_usec - proc->entered_ready.tv_usec);
+    // get difference between entered_ready and current time
+    struct timeval time_diff = timeval_diff(proc->entered_ready, current_time);
 
     // update process wait time with new wait time
-    proc->start_wait_end_time[1] += time_diff / 1000;
+    proc->wait = timeval_add(proc->wait, time_diff);
+}
+
+struct timeval timeval_diff(struct timeval start, struct timeval end) {
+    struct timeval diff;
+    diff.tv_sec = end.tv_sec - start.tv_sec;
+    diff.tv_usec = end.tv_usec - start.tv_usec;
+
+    if (diff.tv_usec < 0) {
+        diff.tv_sec -= 1;
+        diff.tv_usec += 1000000;
+    }
+
+    return diff;
+}
+
+struct timeval timeval_add(struct timeval a, struct timeval b) {
+    struct timeval result;
+    result.tv_sec = a.tv_sec + b.tv_sec;
+    result.tv_usec = a.tv_usec + b.tv_usec;
+
+    if (result.tv_usec >= 1000000) {
+        result.tv_sec += 1;
+        result.tv_usec -= 1000000;
+    }
+
+    return result;
 }

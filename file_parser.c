@@ -60,13 +60,19 @@ void *parse_file(void *arg){
                 word = strtok(NULL, " \t\n");
             }
 
+            // get start time of new process
+            struct timeval start_time;
+            gettimeofday(&start_time, NULL);
+
             // create a new process with priority and burst times
-            Process *new_process = create_proc(priority, bursts, burst_count);
+            Process *new_process = create_proc(priority, bursts, burst_count, start_time);
 
             if(DEBUG){ 
                 printf("\nAfter process Creation\n");
                 print_process(new_process);
             }
+
+
             pthread_mutex_lock(&readyq_mtx);
             append(ready_queue, new_process);
             pthread_mutex_unlock(&readyq_mtx);
@@ -87,15 +93,7 @@ void *parse_file(void *arg){
 
         } else if (strcmp(word, "stop") == 0) {
             //stop the program
-
-            // while (!isEmpty(ready_queue)){
-            //     // Process *some_proc = popFirst(ready_queue);
-            //     // printf("\nPrinting someproc\n");
-            //     // print_process(popFirst(ready_queue)); 
-            // }
-
             return NULL;
-
         } else {
             fprintf(stderr, "Error: invalid input. please check that the file is correct\n");
             exit(1);
