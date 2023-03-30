@@ -267,7 +267,7 @@ int main(int argc, char const *argv[]) {
 
     
     // print results
-    printf("Input File Name                 : %f\n", file_name);
+    printf("Input File Name                 : %s\n", file_name);
     printf("Throughput                      : %f\n", throughput);
     printf("Avg. Turnaround Time            : %f\n", avg_turnaround);
     printf("Avg. Waiting Time in Ready Queue: %f\n", avg_wait);
