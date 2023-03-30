@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 typedef struct Process {
     int priority; // process's priority level
@@ -21,5 +22,7 @@ int get_burst_time(Process *proc);
 
 // return next burst time
 int get_next_burst(Process *proc);
+
+void print_process(Process *proc);
 
 #endif

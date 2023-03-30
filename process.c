@@ -22,3 +22,12 @@ int get_next_burst(Process *proc) {
     proc->index++;
     return proc->burst_times[proc->index];
 }
+
+void print_process(Process *proc){
+    printf("Priority: %d\n", proc->priority);
+    printf("BurstNum: %d\n", proc->burst_count);
+    for(int i = 0; i < proc->burst_count; i++){
+        printf("%d ", proc->burst_times[i]);
+    }
+    printf("\n");
+}
