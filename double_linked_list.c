@@ -55,13 +55,13 @@ Process *popFirst(DoublyLinkedList *list){
     if (oldHead == NULL){                       //Make sure list isn't empty
         return NULL;
     }
+    storage = oldHead->proc;                    //Store the head proc in storage
 
     if(list->head->next != NULL){               //Is there a next node
-        storage = oldHead->proc;
         list->head = list->head->next;          //Make the head's next the new head
         list->head->prev = NULL;                //Clear the old head from the current head's link
-        free(oldHead);                          //Free the memory allocated to oldHead
     }
+    free(oldHead);                              //Free the memory allocated to oldHead
     list->size--;                               //Decrement list size
     return storage;                             //Return the process
 }
@@ -84,6 +84,8 @@ Process *popHighP(DoublyLinkedList *list){
         if(curNode->proc->priority > priorityCounter){
             if(curNode->proc->priority == 10){  //Check if this is the highest priority
                 storage = curNode->proc;        //Move the proc to storage
+                curNode->next->prev = curNode->prev;//Cut curNode out of the list
+                curNode->prev->next = curNode->next;//Cut curNode out of the list
                 free(curNode);                  //Free the memory used by node
                 list->size--;                   //Decrement list size
                 return storage;                 //If it is, just return it
