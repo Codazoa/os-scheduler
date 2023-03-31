@@ -16,7 +16,9 @@ Quantum is only used for RR (Round Robin) scheduling algorithm
 - We create shared memory queues for the threads to communicate and mutexes to control access to the structures to prevent race conditions.
 
 > Your approach to synchronization issues
-- 
+- We use a semaphore to block threads until they have all been created. Mutexes protect access to shared memory such as the complete_queue, ready_queue, and io_queue. 
+- The cpu_thread checkes for multiple conditions to be met before it can exit. The semaphore has to be equal to 2 meaning file_parser and io_thread have finished, the current ready_queue has to be empty, and the complete_queue size has to equal the number of processes we have run. The file parser sets a flag when it exits (fp_done) to tell the other processes it has finished.
+- The io_thread essentially works the same as the cpu_thread for determining synchronization. 
 
 > How you switch between scheduling algorithms
 - The requested scheduling algorithm is checked for in main before any threads are created. Each 
