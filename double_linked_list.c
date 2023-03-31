@@ -98,7 +98,7 @@ Process *popLast(DoublyLinkedList *list){
 //popRandom
 //Randomly removes a node from the DLL
 Process *popRandom(DoublyLinkedList *list){
-    int randomIndex = rand() % (list->size+1);    //Get a random index to go through
+    int randomIndex = rand() % (list->size);    //Get a random index to go through
     int counter = 1;
     Node *curNode = list->head;
     Process *storage;
