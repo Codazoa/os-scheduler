@@ -37,12 +37,8 @@ void print_process(Process *proc){
     printf("StartTime: %ld.%ld\n", 
         proc->start.tv_sec,
         proc->start.tv_usec);
-    printf("WaitTime: %ld.%ld\n", 
-        proc->wait.tv_sec,
-        proc->wait.tv_usec);
-    printf("EndTime: %ld.%ld\n",
-        proc->end.tv_sec,
-        proc->end.tv_usec);
+    printf("WaitTime: %f\n", getTimeInMs(proc->wait));
+    printf("EndTime: %f\n", getTimeInMs(proc->end));
 }
 
 void calcWaitTime(Process *proc) {
@@ -82,6 +78,6 @@ struct timeval timeval_add(struct timeval a, struct timeval b) {
     return result;
 }
 
-int getTimeInMs(struct timeval a){
-	return a.tv_sec * 1000 + a.tv_usec / 1000;
+float getTimeInMs(struct timeval a){
+	return ((float)a.tv_sec * 1000 + (float)a.tv_usec / 1000);
 }

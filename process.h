@@ -35,6 +35,6 @@ struct timeval timeval_diff(struct timeval start, struct timeval end);
 
 struct timeval timeval_add(struct timeval a, struct timeval b);
 
-int getTimeInMs(struct timeval a);
+float getTimeInMs(struct timeval a);
 
 #endif
