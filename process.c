@@ -79,5 +79,5 @@ struct timeval timeval_add(struct timeval a, struct timeval b) {
 }
 
 int getTimeInMs(struct timeval a){
-	return (int)(((float)a.tv_sec * 1000 + (float)a.tv_usec / 1000)*1000);
+	return (int)(((float)a.tv_sec * 1000 + (float)a.tv_usec / 1000));
 }
