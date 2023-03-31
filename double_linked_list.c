@@ -14,6 +14,7 @@ void append(DoublyLinkedList *list, Process *new_proc) {
     new_node->prev = list->tail;
     new_node->next = NULL;
     gettimeofday(&(new_proc->entered_ready), NULL); // set the time process entered the queue
+    if(DEBUG) {printf("Entered ready queue at: %ld.%ld", new_proc->entered_ready.tv_sec, new_proc->entered_ready.tv_usec);}
 
     // list has a tail
     if (list->tail != NULL) {
@@ -66,7 +67,7 @@ Process *popFirst(DoublyLinkedList *list){
     }
     free(oldHead);                              //Free the memory allocated to oldHead
     list->size--;                               //Decrement list size
-    calcWaitTime(storage);
+    if(storage->index % 2 == 0) {calcWaitTime(storage);}
     return storage;                             //Return the process
 }
 

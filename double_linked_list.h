@@ -5,6 +5,7 @@
 #include <stdlib.h>
 
 #include "process.h"
+#include "options.h"
 
 // struct to hold node data
 typedef struct Node{
