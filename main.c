@@ -203,8 +203,6 @@ int main(int argc, char const *argv[]) {
         exit(1);
     };
 
-    sem_post(&thread_access);
-    sem_post(&thread_access);
 
     // create input file parsing thread
     pthread_t file_parser;
@@ -220,6 +218,8 @@ int main(int argc, char const *argv[]) {
     gettimeofday(&total_start, NULL); 
 
     // set semaphore to 3 to allow threads to start running
+    sem_post(&thread_access);
+    sem_post(&thread_access);
     sem_post(&thread_access);
 
     // join threads and close file
@@ -293,6 +293,26 @@ int main(int argc, char const *argv[]) {
     shmdt(io_queue);
     shmdt(complete_queue);
 
+    // free processes
+    // free nodes
+    cursor = complete_queue->head;
+    while(cursor){
+        if (cursor->prev){
+            free(cursor->prev);
+        }
+        free(cursor->proc);
+        cursor = cursor->next;
+    }
+    free(complete_queue->tail);
+
+    // free queues
+    free(complete_queue);
+    free(ready_queue);
+    free(io_queue);
+
+
+
+    // clear shared memory
     shmctl(shm_readyq_id, IPC_RMID, NULL);
     shmctl(shm_ioq_id, IPC_RMID, NULL);
     shmctl(shm_completeq_id, IPC_RMID, NULL);
