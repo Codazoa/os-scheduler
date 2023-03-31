@@ -278,7 +278,11 @@ int main(int argc, char const *argv[]) {
     
     // print results
     printf("Input File Name                 : %s\n", file_name);
-    printf("CPU Scheduling Alg              : %s\n", alg_type);
+    printf("CPU Scheduling Alg              : %s ", alg_type);
+    if (quantum > 0 && algo == 4) {
+        printf("(%d)", quantum);
+    }
+    printf("\n");
     printf("Total Run Time                  : %d\n", (int)total_runtime_ms);
     printf("Throughput                      : %.3f\n", throughput);
     printf("Avg. Turnaround Time            : %d\n", avg_turnaround);
