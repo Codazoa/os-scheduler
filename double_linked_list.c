@@ -4,6 +4,7 @@ DoublyLinkedList *create_list() {
     DoublyLinkedList *list = malloc(sizeof(DoublyLinkedList));
     list->head = NULL;
     list->tail = NULL;
+    list->size = 0;
     return list;
 }
 
