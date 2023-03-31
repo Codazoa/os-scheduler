@@ -71,6 +71,7 @@ void *start_scheduler(void *arg) {
                 next_proc = popHighP(ready_queue);
                 break; 
             case 4: //Round Robin
+                next_proc = popFirst(ready_queue);
                 break;
         }
         pthread_mutex_unlock(&readyq_mtx);                  //Unlock ready queue
@@ -80,33 +81,50 @@ void *start_scheduler(void *arg) {
             print_process(next_proc);
         }
 
-        // sleep for its time
-        // set up struct for nanosleep
-        struct timespec sleep_time = {0, (get_burst_time(next_proc)*1000000)};
-        struct timespec remaining_time = {0,1};
+        if (algo == 4 && get_burst_time(next_proc) > quantum){
+            // sleep for quantum
+            // set up struct for nanosleep
+            struct timespec sleep_time = {0, (quantum*1000000)};
+            struct timespec remaining_time = {0,1};
 
-        if(DEBUG) {printf("\nCPU: Sleep proc %d for %d\n", next_proc->priority, get_burst_time(next_proc));}
-        nanosleep(&sleep_time, &remaining_time);
-        
-        next_proc->index++;
+            if(DEBUG) {printf("\nCPU: Sleep proc %d for %d\n", next_proc->priority, get_burst_time(next_proc));}
+            nanosleep(&sleep_time, &remaining_time);
+            next_proc->burst_times[next_proc->index] -= quantum;
 
-        if (next_proc->index >= next_proc->burst_count - 1) {
+            // push it onto the io queue 
+            pthread_mutex_lock(&readyq_mtx);
+            append(ready_queue, next_proc);
+            pthread_mutex_unlock(&readyq_mtx);
 
-            struct timeval end_time;
-            gettimeofday(&end_time, NULL);
-            next_proc->end = end_time;
+        } else {
+            // sleep for its time
+            // set up struct for nanosleep
+            struct timespec sleep_time = {0, (get_burst_time(next_proc)*1000000)};
+            struct timespec remaining_time = {0,1};
 
-            pthread_mutex_lock(&completeq_mtx);
-            append(complete_queue, next_proc);
-            pthread_mutex_unlock(&completeq_mtx);
-            if(DEBUG) {printf("\nProcess %d complete: Adding to complete queue\n", next_proc->priority);}
-            continue;
+            if(DEBUG) {printf("\nCPU: Sleep proc %d for %d\n", next_proc->priority, get_burst_time(next_proc));}
+            nanosleep(&sleep_time, &remaining_time);
+            
+            next_proc->index++;
+
+            if (next_proc->index >= next_proc->burst_count - 1) {
+
+                struct timeval end_time;
+                gettimeofday(&end_time, NULL);
+                next_proc->end = end_time;
+
+                pthread_mutex_lock(&completeq_mtx);
+                append(complete_queue, next_proc);
+                pthread_mutex_unlock(&completeq_mtx);
+                if(DEBUG) {printf("\nProcess %d complete: Adding to complete queue\n", next_proc->priority);}
+                continue;
+            }
+
+            // push it onto the io queue 
+            pthread_mutex_lock(&ioq_mtx);
+            append(io_queue, next_proc);
+            pthread_mutex_unlock(&ioq_mtx);
         }
-
-        // push it onto the io queue 
-        pthread_mutex_lock(&ioq_mtx);
-        append(io_queue, next_proc);
-        pthread_mutex_unlock(&ioq_mtx);
     }
 
     if(DEBUG) {printf("Exiting CPU Thread\n"); }
