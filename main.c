@@ -284,7 +284,6 @@ int main(int argc, char const *argv[]) {
         cursor = cursor->next;
     }
 
-    //float total_turnaround_ms = ((float)total_turnaround.tv_sec) * 1000 + ((float)total_turnaround.tv_usec) / 1000;
     int total_turnaround_ms = getTimeInMs(total_turnaround);
     int avg_turnaround = total_turnaround_ms / complete_queue->size;
 
