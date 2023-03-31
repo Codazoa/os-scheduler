@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <pthread.h>
 #include <semaphore.h>
+#include <time.h>
 
 #include "process.h"
 #include "double_linked_list.h"

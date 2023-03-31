@@ -6,6 +6,7 @@
 #include <sys/ipc.h>
 #include <sys/shm.h>
 #include <semaphore.h>
+#include <time.h>
 
 #include "cpu_thread.h"
 #include "io_thread.h"
@@ -193,9 +194,6 @@ int main(int argc, char const *argv[]) {
         exit(1);
     }
 
-    printf("Created IO thread\n");
-    sem_post(&thread_access);
-
     // create thread for cpu scheduler
     pthread_t cpu_thread;
     CPU_args_t cpu_args = { algo, quantum, ready_queue, io_queue, complete_queue, proc_count}; 
@@ -205,6 +203,7 @@ int main(int argc, char const *argv[]) {
         exit(1);
     };
 
+    sem_post(&thread_access);
     sem_post(&thread_access);
 
     // create input file parsing thread
@@ -260,29 +259,30 @@ int main(int argc, char const *argv[]) {
         cursor = cursor->next;
     }
 
-   float total_turnaround_ms = ((float)total_turnaround.tv_sec) * 1000 + ((float)total_turnaround.tv_usec) / 1000;
-   float avg_turnaround = total_turnaround_ms / complete_queue->size;
-
+    //float total_turnaround_ms = ((float)total_turnaround.tv_sec) * 1000 + ((float)total_turnaround.tv_usec) / 1000;
+    int total_turnaround_ms = getTimeInMs(total_turnaround);
+    int avg_turnaround = total_turnaround_ms / complete_queue->size;
 
     //wait time
     struct timeval total_wait = {0, 0};
     cursor = complete_queue->head;
     while (cursor) {
         total_wait = timeval_add(total_wait, cursor->proc->wait);
-
         cursor = cursor->next;
     }
 
-    float total_wait_ms = ((float)total_wait.tv_sec) * 1000 + ((float)total_wait.tv_usec) / 1000;
-    float avg_wait = total_wait_ms / complete_queue->size;
+    int total_wait_ms = getTimeInMs(total_wait);
+    printf("Total Wait Time: %d\n", total_wait_ms);
+    int avg_wait = total_wait_ms / complete_queue->size;
 
     
     // print results
     printf("Input File Name                 : %s\n", file_name);
     printf("CPU Scheduling Alg              : %s\n", alg_type);
+    printf("Total Run Time                  : %f\n", total_runtime_ms);
     printf("Throughput                      : %f\n", throughput);
-    printf("Avg. Turnaround Time            : %f\n", avg_turnaround);
-    printf("Avg. Waiting Time in Ready Queue: %f\n", avg_wait);
+    printf("Avg. Turnaround Time            : %d\n", avg_turnaround);
+    printf("Avg. Waiting Time in Ready Queue: %d\n", avg_wait);
     
     // disconnect shared memory
     shmdt(ready_queue);

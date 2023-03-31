@@ -49,7 +49,7 @@ void *start_scheduler(void *arg) {
             // printf("ready Q is empty\n");
             int sem_value;
             sem_getvalue(&thread_access, &sem_value);
-            if (complete_queue->size == *proc_count && sem_value == 2) {
+            if (complete_queue->size == *proc_count && sem_value == 2 && fp_done == 1) {
                 break;
             }
             continue;
@@ -79,8 +79,13 @@ void *start_scheduler(void *arg) {
         print_process(next_proc);
 
         // sleep for its time
+        // set up struct for nanosleep
+        struct timespec sleep_time = {0, (get_burst_time(next_proc)*1000000)};
+        struct timespec remaining_time = {0,1};
+
         printf("\nCPU: Sleep proc %d for %d\n", next_proc->priority, get_burst_time(next_proc));
-        sleep(get_burst_time(next_proc)/1000);
+        nanosleep(&sleep_time, &remaining_time);
+        
         next_proc->index++;
 
         if (next_proc->index >= next_proc->burst_count - 1) {

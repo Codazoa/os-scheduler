@@ -7,6 +7,7 @@
 #include <pthread.h>
 #include <sys/select.h>
 #include <semaphore.h>
+#include <time.h>
 
 #include "double_linked_list.h"
 #include "process.h"

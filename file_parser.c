@@ -88,13 +88,15 @@ void *parse_file(void *arg){
             // sleep for the given number of milliseconds
             word = strtok(NULL, " \t\n");
 
-            int sleep_time = atoi(word);
-            if (sleep_time == 0 && word[0] != 0) {
+            long int sleep_time_ns = atoi(word) * 1000000;
+            if (sleep_time_ns == 0 && word[0] != 0) {
                 fprintf(stderr, "Error: conversion error, given sleep time is not an integer\n");
                 exit(1);
             } else {
-                printf("DEBUG: sleeping for %d ms\n", sleep_time);
-                sleep(sleep_time/1000);
+                printf("DEBUG: sleeping for %ld ms\n", sleep_time_ns * 1000000);
+                struct timespec sleep_time = {0, sleep_time_ns};
+                struct timespec remaining_time;
+                nanosleep(&sleep_time, &remaining_time);
             }
 
         } else if (strcmp(word, "stop") == 0) {
