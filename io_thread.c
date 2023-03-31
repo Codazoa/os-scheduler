@@ -24,9 +24,9 @@ void *startIO(void *arg) {
 
     Process *proc; // variable used to hold current process
 
-    // pthread_mutex_lock(&thread_running_mtx);
-    // pthread_cond_signal(&thread_running_cond);
-    // pthread_mutex_unlock(&thread_running_mtx);
+    if(DEBUG){
+        printf("Created IO Thread\n");
+    }
 
     // wait for main to allow us to continue
     sem_wait(&thread_access);

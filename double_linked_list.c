@@ -106,6 +106,7 @@ Process *popHighP(DoublyLinkedList *list){
 
                 free(curNode);                  //Free the memory used by node
                 list->size--;                   //Decrement list size
+                calcWaitTime(storage);
                 return storage;                 //If it is, just return it
             }
             priorityCounter = curNode->proc->priority;
@@ -139,6 +140,7 @@ Process *popHighP(DoublyLinkedList *list){
 
             free(curNode);                      //Free the memory allocated to curNode
             list->size--;                       //Decrement list size
+            calcWaitTime(storage);
             return storage;                     //Return this proc
         }
         curNode = curNode->next;                //Set curNode to the next node
@@ -207,6 +209,7 @@ Process *popLeastTimeTotal(DoublyLinkedList *list){
             
             free(curNode);                      //Free the memory allocated to curNode
             list->size--;                       //Decrement list size
+            calcWaitTime(storage);
             return storage;
         }
         curNode = curNode->next;                //set curNode to the next node
@@ -259,6 +262,7 @@ Process *popLeastTimeIndv(DoublyLinkedList *list){
 
             free(curNode);                      //Free the memory allocated to curNode
             list->size--;                       //Decrement list size
+            calcWaitTime(storage);
             return storage;                     //Set lowestTime to the total time from the process
         }
         curNode = curNode->next;                //set curNode to the next node

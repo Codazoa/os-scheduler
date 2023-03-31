@@ -22,12 +22,6 @@ void *parse_file(void *arg){
     DoublyLinkedList *ready_queue = parser_args->ready_queue;
     int *proc_count = parser_args->proc_count;
 
-    // pthread_mutex_lock(&thread_running_mtx);
-    // pthread_cond_signal(&thread_running_cond);
-    // pthread_mutex_unlock(&thread_running_mtx);
-
-    // pthread_mutex_lock(&thread_running_mtx);
-
     // wait for main to allow us to continue
     sem_wait(&thread_access);
 
