@@ -67,6 +67,10 @@ int main(int argc, char const *argv[]) {
                 if(DEBUG) { printf("Activating ROUND ROBIN\n"); }
                 algo = 4;
             }
+            else if (strcmp(argv[i+1], "FCLS") == 0) {
+                if(DEBUG) { printf("Activating FIRST COME LAST SERVE\n"); }
+                algo = 5;
+            }
             else {
                 if(DEBUG) { fprintf(stderr, "Error: Invalid algorithm\n"); }
                 exit(1);
