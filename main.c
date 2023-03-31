@@ -310,8 +310,6 @@ int main(int argc, char const *argv[]) {
     free(ready_queue);
     free(io_queue);
 
-
-
     // clear shared memory
     shmctl(shm_readyq_id, IPC_RMID, NULL);
     shmctl(shm_ioq_id, IPC_RMID, NULL);
