@@ -1,5 +1,6 @@
 ///////////////////////////////////////////
 //
+//
 //  Group: Six-One(-2)
 //  Authors:
 //      Cody Vernon
@@ -8,7 +9,14 @@
 //
 //  Assignment: Simulated CPU Scheduler
 //  Course: CS 460 Operating Systems
+//  
+//  Available Schedulers:
+//      FCFS (First Come First Serve)
+//      SJF  (Shortest Job First)
+//      PR   (Priority Scheduling)
+//      RR   (Round Robin)
 // 
+//
 ///////////////////////////////////////////
 
 #include <stdio.h>
