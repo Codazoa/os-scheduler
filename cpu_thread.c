@@ -73,6 +73,9 @@ void *start_scheduler(void *arg) {
             case 4: //Round Robin
                 next_proc = popFirst(ready_queue);
                 break;
+            case 5: //First Come Last Serve
+                next_proc = popLast(ready_queue);
+                break;
         }
         pthread_mutex_unlock(&readyq_mtx);                  //Unlock ready queue
         
