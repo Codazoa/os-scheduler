@@ -65,14 +65,16 @@ void *startIO(void *arg) {
             continue;
         }
 
-        printf("\nProcess Popped (IO)\n");
-        print_process(proc);
+        if(DEBUG){
+            printf("\nProcess Popped (IO)\n");
+            print_process(proc);
+        }
 
         // set up struct for nanosleep
         struct timespec sleep_time = {0, (get_burst_time(proc)*1000000)};
         struct timespec remaining_time = {0,1};
 
-        printf("\nIO: Sleep proc %d for %d\n", proc->priority, get_burst_time(proc));
+        if(DEBUG) {printf("\nIO: Sleep proc %d for %d\n", proc->priority, get_burst_time(proc));}
         nanosleep(&sleep_time, &remaining_time);
 
         proc->index++;

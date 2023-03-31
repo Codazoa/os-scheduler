@@ -272,15 +272,15 @@ int main(int argc, char const *argv[]) {
     }
 
     int total_wait_ms = getTimeInMs(total_wait);
-    printf("Total Wait Time: %d\n", total_wait_ms);
+    if(DEBUG) {printf("Total Wait Time: %d\n", total_wait_ms);}
     int avg_wait = total_wait_ms / complete_queue->size;
 
     
     // print results
     printf("Input File Name                 : %s\n", file_name);
     printf("CPU Scheduling Alg              : %s\n", alg_type);
-    printf("Total Run Time                  : %f\n", total_runtime_ms);
-    printf("Throughput                      : %f\n", throughput);
+    printf("Total Run Time                  : %d\n", (int)total_runtime_ms);
+    printf("Throughput                      : %.3f\n", throughput);
     printf("Avg. Turnaround Time            : %d\n", avg_turnaround);
     printf("Avg. Waiting Time in Ready Queue: %d\n", avg_wait);
     

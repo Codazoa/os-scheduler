@@ -93,7 +93,7 @@ void *parse_file(void *arg){
                 fprintf(stderr, "Error: conversion error, given sleep time is not an integer\n");
                 exit(1);
             } else {
-                printf("DEBUG: sleeping for %ld ms\n", sleep_time_ns * 1000000);
+                if(DEBUG){printf("DEBUG: sleeping for %ld ms\n", sleep_time_ns);}
                 struct timespec sleep_time = {0, sleep_time_ns};
                 struct timespec remaining_time;
                 nanosleep(&sleep_time, &remaining_time);
