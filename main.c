@@ -1,3 +1,16 @@
+///////////////////////////////////////////
+//
+//  Group: Six-One(-2)
+//  Authors:
+//      Cody Vernon
+//      Jack Harvison
+//      Drake Farmer
+//
+//  Assignment: Simulated CPU Scheduler
+//  Course: CS 460 Operating Systems
+// 
+///////////////////////////////////////////
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
