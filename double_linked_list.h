@@ -30,6 +30,9 @@ void append(DoublyLinkedList *list, Process *new_proc);
 //Pop off first proc of list
 Process *popFirst(DoublyLinkedList *list);
 
+//Pop off the last proc of list
+Process *popLast(DoublyLinkedList *list);
+
 //Return the highest priority proc of the linked list
 Process *popHighP(DoublyLinkedList *list);
 
