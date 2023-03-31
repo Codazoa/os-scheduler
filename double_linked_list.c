@@ -88,8 +88,22 @@ Process *popHighP(DoublyLinkedList *list){
         if(curNode->proc->priority > priorityCounter){
             if(curNode->proc->priority == 10){  //Check if this is the highest priority
                 storage = curNode->proc;        //Move the proc to storage
-                curNode->next->prev = curNode->prev;//Cut curNode out of the list
-                curNode->prev->next = curNode->next;//Cut curNode out of the list
+
+                //Repair the list for when we remove the node
+                if(curNode->next != NULL && curNode->prev != NULL){ //If we have a node before and after us
+                    curNode->next->prev = curNode->prev;            //Splice us out of the list
+                    curNode->prev->next = curNode->next;
+                }else if(curNode->next != NULL){                    //We only have a next node (We are the head)
+                    curNode->next->prev = NULL;                     //Assign the next node to be the head
+                    list->head = curNode->next;
+                }else if(curNode->prev != NULL){                    //We only have a previous node (We are the tail)
+                    curNode->prev->next = NULL;                     //Assign the prev node to be the tail
+                    list->tail = curNode->prev;
+                }else{                                              //We do not have a next or previous (We are head and tail)
+                    list->head = NULL;
+                    list->tail = NULL;
+                }
+
                 free(curNode);                  //Free the memory used by node
                 list->size--;                   //Decrement list size
                 return storage;                 //If it is, just return it
@@ -107,8 +121,22 @@ Process *popHighP(DoublyLinkedList *list){
         //Check to see if curNode matches our highest priority
         if(curNode->proc->priority == priorityCounter){
             storage = curNode->proc;            //Save the proc in storage
-            curNode->next->prev = curNode->prev;//Cut curNode out of the list
-            curNode->prev->next = curNode->next;//Cut curNode out of the list
+
+            //Repair the list for when we remove the node
+            if(curNode->next != NULL && curNode->prev != NULL){ //If we have a node before and after us
+                curNode->next->prev = curNode->prev;            //Splice us out of the list
+                curNode->prev->next = curNode->next;
+            }else if(curNode->next != NULL){                    //We only have a next node (We are the head)
+                curNode->next->prev = NULL;                     //Assign the next node to be the head
+                list->head = curNode->next;
+            }else if(curNode->prev != NULL){                    //We only have a previous node (We are the tail)
+                curNode->prev->next = NULL;                     //Assign the prev node to be the tail
+                list->tail = curNode->prev;
+            }else{                                              //We do not have a next or previous (We are head and tail)
+                list->head = NULL;
+                list->tail = NULL;
+            }
+
             free(curNode);                      //Free the memory allocated to curNode
             list->size--;                       //Decrement list size
             return storage;                     //Return this proc
@@ -159,8 +187,22 @@ Process *popLeastTimeTotal(DoublyLinkedList *list){
 
         if(timer == lowestTime){                //If this has the lowest time remaining return it
             storage = curNode->proc;            //Save the proc in storage
-            curNode->next->prev = curNode->prev;//Cut curNode out of the list
-            curNode->prev->next = curNode->next;//Cut curNode out of the list
+
+            //Repair the list for when we remove the node
+            if(curNode->next != NULL && curNode->prev != NULL){ //If we have a node before and after us
+                curNode->next->prev = curNode->prev;            //Splice us out of the list
+                curNode->prev->next = curNode->next;
+            }else if(curNode->next != NULL){                    //We only have a next node (We are the head)
+                curNode->next->prev = NULL;                     //Assign the next node to be the head
+                list->head = curNode->next;
+            }else if(curNode->prev != NULL){                    //We only have a previous node (We are the tail)
+                curNode->prev->next = NULL;                     //Assign the prev node to be the tail
+                list->tail = curNode->prev;
+            }else{                                              //We do not have a next or previous (We are head and tail)
+                list->head = NULL;
+                list->tail = NULL;
+            }
+            
             free(curNode);                      //Free the memory allocated to curNode
             list->size--;                       //Decrement list size
             return storage;
@@ -195,8 +237,22 @@ Process *popLeastTimeIndv(DoublyLinkedList *list){
         //Check if the next burst time is lower than the current record
         if(curNode->proc->burst_times[curNode->proc->index] == lowestTime){
             storage = curNode->proc;            //Save the proc in storage
-            curNode->next->prev = curNode->prev;//Cut curNode out of the list
-            curNode->prev->next = curNode->next;//Cut curNode out of the list
+
+            //Repair the list for when we remove the node
+            if(curNode->next != NULL && curNode->prev != NULL){ //If we have a node before and after us
+                curNode->next->prev = curNode->prev;            //Splice us out of the list
+                curNode->prev->next = curNode->next;
+            }else if(curNode->next != NULL){                    //We only have a next node (We are the head)
+                curNode->next->prev = NULL;                     //Assign the next node to be the head
+                list->head = curNode->next;
+            }else if(curNode->prev != NULL){                    //We only have a previous node (We are the tail)
+                curNode->prev->next = NULL;                     //Assign the prev node to be the tail
+                list->tail = curNode->prev;
+            }else{                                              //We do not have a next or previous (We are head and tail)
+                list->head = NULL;
+                list->tail = NULL;
+            }
+            
             free(curNode);                      //Free the memory allocated to curNode
             list->size--;                       //Decrement list size
             return storage;                     //Set lowestTime to the total time from the process
