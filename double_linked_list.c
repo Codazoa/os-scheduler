@@ -172,6 +172,8 @@ Process *popLeastTimeTotal(DoublyLinkedList *list){
         if(timer < lowestTime){                 //Check if the total value is less than the lowest value
             lowestTime = timer;                 //Set lowestTime to the total time from the process
         }
+
+        curNode = curNode->next;                //set curNode to the next node
     }
 
     curNode = list->head;                       //Set curNode back to the head
@@ -207,6 +209,7 @@ Process *popLeastTimeTotal(DoublyLinkedList *list){
             list->size--;                       //Decrement list size
             return storage;
         }
+        curNode = curNode->next;                //set curNode to the next node
     }
     return NULL;                                //Backup return if something bad happens
 }
@@ -228,6 +231,7 @@ Process *popLeastTimeIndv(DoublyLinkedList *list){
         if(curNode->proc->burst_times[curNode->proc->index] < lowestTime){
             lowestTime = curNode->proc->burst_times[curNode->proc->index];
         }
+        curNode = curNode->next;                //set curNode to the next node
     }
 
     curNode = list->head;                       //Set curNode back to the head
@@ -252,11 +256,12 @@ Process *popLeastTimeIndv(DoublyLinkedList *list){
                 list->head = NULL;
                 list->tail = NULL;
             }
-            
+
             free(curNode);                      //Free the memory allocated to curNode
             list->size--;                       //Decrement list size
             return storage;                     //Set lowestTime to the total time from the process
         }
+        curNode = curNode->next;                //set curNode to the next node
     }
     return NULL;                                //Backup return if something bad happens
 }
