@@ -95,6 +95,41 @@ Process *popLast(DoublyLinkedList *list){
     return storage;
 }
 
+//popRandom
+//Randomly removes a node from the DLL
+Process *popRandom(DoublyLinkedList *list){
+    int randomIndex = rand() % (list->size+1);    //Get a random index to go through
+    int counter = 1;
+    Node *curNode = list->head;
+    Process *storage;
+
+    while(counter < randomIndex){
+        curNode = curNode->next;
+    }
+    storage = curNode->proc;
+
+    //Repair the list for when we remove the node
+    if(curNode->next != NULL && curNode->prev != NULL){ //If we have a node before and after us
+        curNode->next->prev = curNode->prev;            //Splice us out of the list
+        curNode->prev->next = curNode->next;
+    }else if(curNode->next != NULL){                    //We only have a next node (We are the head)
+        curNode->next->prev = NULL;                     //Assign the next node to be the head
+        list->head = curNode->next;
+    }else if(curNode->prev != NULL){                    //We only have a previous node (We are the tail)
+        curNode->prev->next = NULL;                     //Assign the prev node to be the tail
+        list->tail = curNode->prev;
+    }else{                                              //We do not have a next or previous (We are head and tail)
+        list->head = NULL;
+        list->tail = NULL;
+    }
+
+    free(curNode);                  //Free the memory used by node
+    list->size--;                   //Decrement list size
+    calcWaitTime(storage);
+    return storage;                 //If it is, just return it
+
+}
+
 //popHighP
 //This function will return the highest priority process
 Process *popHighP(DoublyLinkedList *list){

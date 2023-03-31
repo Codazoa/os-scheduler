@@ -33,6 +33,9 @@ Process *popFirst(DoublyLinkedList *list);
 //Pop off the last proc of list
 Process *popLast(DoublyLinkedList *list);
 
+//Pop off a random node in the list
+Process *popRandom(DoublyLinkedList *list);
+
 //Return the highest priority proc of the linked list
 Process *popHighP(DoublyLinkedList *list);
 
